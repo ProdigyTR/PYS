@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Anasayfa";
+}
+<style>
+    #pieDepartmanOrtalama {
+        position: relative;
+        height: 40vh;
+        overflow: hidden;
+    }
+
+    #gaugeDepartmanOrtalama {
+        position: relative;
+        height: 40vh;
+        overflow: hidden;
+    }
+</style>
+<div class="col-sm-12">
+    <div class="card">
+        <div class="card-body d-flex justify-content-between">
+            <div class="col-sm-6" id="pieDepartmanOrtalama"></div>
+            <div class="col-sm-5" id="gaugeDepartmanOrtalama"></div>
+        </div>
+    </div>   
+</div>
+<script src="https://fastly.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+    function departmanOrtalamaPie() {
+        var dom = document.getElementById('pieDepartmanOrtalama');
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+
+        var option;
+
+        option = {
+            title: {
+                text: 'Departman Değerlendirme',
+                subtext: 'Departmanların ortalama puanları',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                bottom: 10,
+                left: 'center',
+                data: ['Muhasebe', 'Finans', 'Satınalma', 'İnsan Kaynakları', 'İdari İşler']
+            },
+            series: [
+                {
+                    type: 'pie',
+                    radius: '65%',
+                    center: ['50%', '50%'],
+                    selectedMode: 'single',
+                    data: [
+                        { value: 70, name: 'Muhasebe' },
+                        { value: 77, name: 'Finans' },
+                        { value: 74, name: 'Satınalma' },
+                        { value: 75, name: 'İnsan Kaynakları' },
+                        { value: 78, name: 'İdari İşler' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        if (option && typeof option === 'object') {
+            myChart.setOption(option);
+        }
+
+        window.addEventListener('resize', myChart.resize);
+    };
+    function departmanOrtalamaGauge() {
+        var dom = document.getElementById('gaugeDepartmanOrtalama');
+        var myChart = echarts.init(dom, null, {
+            renderer: 'canvas',
+            useDirtyRect: false
+        });
+        var app = {};
+        var option;
+        option = {
+            title: {
+                text: 'Departman Değerlendirme',
+                subtext: 'Departmanların ortalama puanı',
+                left: 'center'
+            },
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+            series: [
+                {
+                    name: 'Pressure',
+                    type: 'gauge',
+                    progress: {
+                        show: true
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: '{value}'
+                    },
+                    data: [
+                        {
+                            value: 74.8,
+                            name: 'PUAN'
+                        }
+                    ]
+                }
+            ]
+        };
+        if (option && typeof option === 'object') {
+            myChart.setOption(option);
+        }
+        window.addEventListener('resize', myChart.resize);
+    };
+    window.addEventListener('load', function () {
+        departmanOrtalamaPie();
+        departmanOrtalamaGauge();
+    });
+</script>

@@ -1,0 +1,50 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Kpi Kart Oluştur";
+}
+@foreach (var item in Model.Employees)
+{
+    <div class="col-sm-12 mb-1">
+        <div class="card col-sm-4">
+            <div class="card-body">
+                <input class="form-control" value="@item.Name @item.LastName" readonly />
+                <input class="d-none" name="TC" value="@item.TC" />
+            </div>
+        </div>
+    </div>
+}
+@foreach (var item in Model.EmployeeKpis)
+{
+    int sira = 1;
+    <div class="card col-sm-12 mb-1">
+        <div class="card-body">
+            <form asp-controller="KPI" asp-action="EmployeeCard" method="get" class="col-sm-12">
+                <button class="btn btn-lg btn-outline-primary" value="@item.Id" name="kpiId">#@sira</button>
+                <input class="d-none" name="TC" value="@item.TC"/>
+            </form>
+            <div class="col-sm-12 mt-1">
+                <table class="table table-sm table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Hedef</th>
+                            <th class="text-center">Açıklama</th>
+                            <th class="text-center">Başlangıç</th>
+                            <th class="text-center">Bitiş</th>
+                    </thead>
+                    <tbody>
+                        @foreach (var ksc in Model.KpiScoreCards)
+                        {
+                            <tr>
+                                <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.Name).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()</td>
+                                <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.Explanation).FirstOrDefault()</td>
+                                <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.StartTime.ToShortDateString() + " " + s.StartTime.ToShortTimeString()).FirstOrDefault()</td>
+                                <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.EndTime.ToShortDateString() + " " + s.EndTime.ToShortTimeString()).FirstOrDefault()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    sira++;
+}

@@ -1,0 +1,137 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = PerformansYonetimSistemi
+build_property.RootNamespace = PerformansYonetimSistemi
+build_property.ProjectDir = C:\Software\PerformansYonetimSistemi\PerformansYonetimSistemi\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Software\PerformansYonetimSistemi\PerformansYonetimSistemi
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Department/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudFxMaXN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Employee/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Employee/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Employee/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW1wbG95ZWVcTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/AlreadyCompleted.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcQWxyZWFkeUNvbXBsZXRlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/CheckForms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcQ2hlY2tGb3Jtcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/EditForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcRWRpdEZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/Form.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcRm9ybS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/FormCompleted.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcRm9ybUNvbXBsZXRlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/Modules.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcTW9kdWxlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/NeedToFillForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcTmVlZFRvRmlsbEZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/SendSelection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcU2VuZFNlbGVjdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Hr/ShowForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSHJcU2hvd0Zvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/Card.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXENhcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/DepartmanFilter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXERlcGFydG1hbkZpbHRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/EmployeeCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXEVtcGxveWVlQ2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/EmployeeCardEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXEVtcGxveWVlQ2FyZEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/KPI/ScoreCard.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJXFNjb3JlQ2FyZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Position/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUG9zaXRpb25cTGlzdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Target/DepartmanFilter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZ2V0XERlcGFydG1hbkZpbHRlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Target/EmployeeFilter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZ2V0XEVtcGxveWVlRmlsdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Target/List.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVGFyZ2V0XExpc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-fi93jfkqco

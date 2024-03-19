@@ -1,0 +1,57 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Kpi Kart Oluştur";
+}
+<style>
+     .choices {
+         font-size: 0.6944444444rem !important;
+     }
+
+     .choices__inner {
+         font-size: 0.6944444444rem !important;
+         min-height: 24.66px !important;
+         padding: 0px 0px 0px 0px;
+         line-height: 0rem !important;
+     }
+
+     .choices__list--multiple .choices__item {
+         font-size: 0.6944444444rem !important;
+     }
+
+     .choices__list--dropdown .choices__item {
+         font-size: 0.6944444444rem !important;
+     }
+
+     .choices__list--dropdown .choices__item--selectable::after {
+         font-size: 8px !important;
+     }
+
+     .choices__heading {
+         font-size: 8px !important;
+     }
+
+     .choices__input {
+         font-size: 12px !important;
+     }
+</style>
+<form asp-controller="KPI" asp-action="CardToEmployee" method="post" class="col-sm-12 d-flex justify-content-between">
+    <div class="card col-sm-4">
+        <div class="card-body">
+            <select class="form-select form-select-sm fs--2 js-choice" name="TC" data-options='{"removeItemButton":true,"placeholder":true,"searchResultLimit":10}' required>
+                <option class="fs--2" value="">Çalışan Seçiniz...</option>
+                @foreach (var item in Model.Employees)
+                {
+                    <option class="fs--2" value="@item.TC">@item.Name @item.LastName</option>
+                }
+            </select>
+        </div>
+    </div>    
+    <div class="card col-sm-8 ms-1">
+        <div class="card-body">
+            <div  class="col-sm-12 d-flex justify-content-between">
+                <button class="btn btn-outline-success" style="width:48%" type="submit" name="route" value="new">Yeni Oluştur</button>                
+                <button class="btn btn-outline-primary" style="width:48%" type="submit" name="route" value="edit">Mevcut Kartı Düzenle</button>
+            </div>
+        </div>
+    </div>
+</form>

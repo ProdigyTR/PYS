@@ -1,0 +1,136 @@
+﻿@using PerformansYonetimSistemi.Helper;
+@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["Title"] = "Çalışan Listesi";
+    Functions functions = new Functions();
+}
+<style>
+    tr:hover {
+        cursor: pointer;
+    }
+</style>
+<div class="card">
+    <div class="card-body" style="height:85vh">
+        <div class="scrollbar" style="height:82vh">
+            <table class="table table-sm table-bordered table-hover fs--2">
+                <thead class="position-sticky top-0 bg-secondary text-white">
+                    <tr>
+                        <th class="text-center">T.C Kimlik</th>
+                        <th class="text-center">Adı Soyadı</th>
+                        <th class="text-center">Görev/Ünvan</th>
+                        <th class="text-center">Departman</th>
+                        <th class="text-center">İşe Giriş Tarihi</th>
+                        <th class="text-center">Kıdem Süresi</th>
+                        <th class="text-center">Mail</th>
+                        <th class="text-center">Toplam İş Tecrübesi (Yıl)</th>
+                        <th class="text-center">Yöneticisi</th>
+                        <th class="text-center">Müdürü</th>
+                        <th class="text-center">Genel Müdür</th>
+                        <th class="text-center">Aktif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Employees.OrderBy(o => o.Name).ThenBy(t => t.LastName))
+                    {
+                        //Müdür Kontrol
+                        string manager = "";
+                        if (item.IsManager)
+                        {
+                            manager = "far fa-check-circle text-success";
+                        }
+                        else
+                        {
+                            manager = "far fa-times-circle text-warning";
+                        }
+                        //Müdür Kontrol
+                        string gm = "";
+                        if (item.IsGM)
+                        {
+                            gm = "far fa-check-circle text-success";
+                        }
+                        else
+                        {
+                            gm = "far fa-times-circle text-danger";
+                        }
+                        //Active
+                        string activeSpan = "";
+                        if (@item.IsActive)
+                        {
+                            activeSpan = "far fa-check-circle text-success";
+                        }
+                        else
+                        {
+                            activeSpan = "far fa-times-circle text-danger";
+                        }
+                        //Active
+
+                        // Tarihler arasındaki farkı bul
+                        TimeSpan fark = DateTime.Now - @item.DateOfRecruitment;
+
+                        // Yılları ve ayları hesapla
+                        int yilFarki = (int)(fark.TotalDays / 365.25); // ortalama yıl uzunluğu kullanarak
+                        int ayFarki = (int)((fark.TotalDays % 365.25) / 30.436875); // ortalama ay uzunluğu kullanarak
+                        string kidemSuresi = "";
+                        // Sonucu yazdır
+                        if (yilFarki > 0)
+                        {
+                            kidemSuresi = $"{yilFarki} yıl {ayFarki} ay";
+                        }
+                        else
+                        {
+                            kidemSuresi = $"{ayFarki} ay";
+                        }
+                        <tr ondblclick="openModal(this);">
+                            <td class="text-nowrap">@item.TC</td>
+                            <td class="text-center text-nowrap">@item.Name @item.LastName</td>
+                            <td class="text-center text-nowrap">@Model.Positions.Where(w=>w.Code==item.Position).Select(s=>s.Name).FirstOrDefault()</td>
+                            <td class="text-center text-nowrap">@Model.Departments.Where(w=>w.Code==item.Department).Select(s=>s.Name).FirstOrDefault()</td>
+                            <td class="text-center text-nowrap">@item.DateOfRecruitment.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center text-nowrap">@kidemSuresi</td>
+                            <td class="text-center text-nowrap">@item.Mail</td>
+                            <td class="text-center text-nowrap">@(item.TotalWorkExperience == 0 ? "" : item.TotalWorkExperience)</td>
+                            <td class="text-center text-nowrap">@(functions.ResponsibleList(item.Responsible, Model.Employees))</td>
+                            <td class="text-center text-nowrap"><span class="@manager"></span></td>
+                            <td class="text-center text-nowrap"><span class="@gm"></span></td>
+                            <td class="text-center text-nowrap"><span class="@activeSpan"></span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<button class="d-none" id="btnModal" type="button" data-bs-toggle="modal" data-bs-target="#modal"></button>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 300px">
+        <div class="modal-content position-relative">
+            <div class="modal-body p-0">
+                <div class="bg-light rounded-top-lg py-3 ps-4 pe-6 text-center">
+                    <h4 class="mb-1" id="personModalFullName">Mert Bağbaşı</h4>
+                </div>
+                <div class="p-4 pb-0">
+                    <form asp-controller="Employee" asp-action="GoTo" method="get">
+                        <input class="d-none" name="TC" id="personModalTc" value=""/>
+                        <div class="mb-3">
+                            <button class="btn btn-lg btn-outline-warning w-100 h-100" type="submit" name="act" value="edit">Düzenle</button>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-lg btn-outline-danger w-100 h-100" type="submit" name="act" value="passive">Pasife Al</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(tr) {
+        var tc = tr.children[0].innerHTML;
+        var fullName = tr.children[1].innerHTML
+        document.getElementById('personModalFullName').innerHTML = fullName;
+        document.getElementById('personModalTc').value = tc;
+        document.getElementById('btnModal').click();
+    }
+</script>

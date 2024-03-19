@@ -1,0 +1,24 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Departman Seçimi - KPI";
+}
+<form asp-controller="KPI" asp-action="List" method="get" class="card">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div class="col-sm-8">
+                <select class="form-select js-choice w-100" name="Code" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Departman Seçiniz..</option>
+                @foreach (var item in Model.Departments)
+                    {
+                        <option value="@item.Code">@item.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-outline-primary w-100 h-100" type="submit">
+                    İlerle <span class="fas fa-forward"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

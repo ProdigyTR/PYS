@@ -1,0 +1,118 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Kpi Kart Oluştur";
+}
+<style>
+    .choices {
+        font-size: 0.6944444444rem !important;
+    }
+
+    .choices__inner {
+        font-size: 0.6944444444rem !important;
+        min-height: 24.66px !important;
+        padding: 0px 0px 0px 0px;
+        line-height: 0rem !important;
+    }
+
+    .choices__list--multiple .choices__item {
+        font-size: 0.6944444444rem !important;
+    }
+
+    .choices__list--dropdown .choices__item {
+        font-size: 0.6944444444rem !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable::after {
+        font-size: 8px !important;
+    }
+
+    .choices__heading {
+        font-size: 8px !important;
+    }
+
+    .choices__input {
+        font-size: 12px !important;
+    }
+</style>
+<div class="col-sm-12 d-flex justify-content-between">
+    @foreach (var item in Model.Employees)
+    {
+        <div class="card col-sm-4">
+            <div class="card-body">
+                <input class="form-control" value="@item.Name @item.LastName" readonly />
+                <input class="d-none" name="TC" value="@item.TC" />
+            </div>
+        </div>
+    }
+    <div class="card col-sm-8 ms-1">
+        <div class="card-body">
+            <table class="table table-sm table-hovered table-bordered table-striped fs--2">
+                <thead>
+                    <tr>
+                        <th class="text-center">Hedef</th>
+                        <th class="text-center">Açıklama</th>
+                        <th class="text-center">Başlangıç</th>
+                        <th class="text-center">Bitiş</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tg in Model.Targets)
+                    {
+                        <tr>
+                            <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == tg.Name).Select(s => s.Name).FirstOrDefault()</td>
+                            <td class="align-middle text-wrap">@tg.Explanation</td>
+                            <td class="align-middle text-center">@tg.StartTime.ToShortDateString() @tg.StartTime.ToShortTimeString()</td>
+                            <td class="align-middle text-center">@tg.EndTime.ToShortDateString() @tg.EndTime.ToShortTimeString()</td>
+                            <td class="text-center align-middle">
+                                <form asp-controller="KPI" asp-action="EmployeeCard" method="post">
+                                    <button class="btn btn-sm btn-outline-success fs--2" type="submit" value="@tg.Id" name="Target">
+                                        <span class="fas fa-plus"></span>
+                                    </button>
+                                    <input class="d-none" name="KpiId" value="@Model.EmployeeKpis.Select(s=>s.Id).FirstOrDefault()" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="card col-sm-12 mt-1">
+    <div class="card-body">
+        <div class="col-sm-12 mt-1">
+            <table class="table table-sm table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Hedef</th>
+                        <th class="text-center">Açıklama</th>
+                        <th class="text-center">Başlangıç</th>
+                        <th class="text-center">Bitiş</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.KpiScoreCards)
+                    {
+                        <tr>
+                            <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == item.Target).Select(s => s.Name).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()</td>
+                            <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.Explanation).FirstOrDefault()</td>
+                            <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.StartTime.ToShortDateString() + " " + s.StartTime.ToShortTimeString()).FirstOrDefault()</td>
+                            <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.EndTime.ToShortDateString() + " " + s.EndTime.ToShortTimeString()).FirstOrDefault()</td>
+                            <td class="text-center align-middle">
+                                <form asp-controller="KPI" asp-action="DeleteKpiScoreCard" method="post">
+                                    <button class="btn btn-sm btn-outline-danger fs--2" value="@item.Id" name="Id">
+                                        <span class="far fa-trash-alt"></span>
+                                    </button>
+                                    <input class="d-none" name="Id" value="@item.Id"/>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

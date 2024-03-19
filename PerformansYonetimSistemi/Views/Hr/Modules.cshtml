@@ -1,0 +1,21 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["Title"] = "Modüller";
+}
+<div class="col-sm-12 d-flex">
+    <form asp-controller="Hr" asp-action="Form" class="card col-sm-4" style="height:25vh">
+        <div class="card-body" style="background-color: #f1aeb5;">
+            <button class="btn h-100 w-100 fs-4 fw-bold">Form Tasarımı</button>
+        </div>
+    </form>
+    <form asp-controller="Hr" asp-action="EmployeeList" class="card col-sm-4" style="height:25vh">
+        <div class="card-body" style="background-color: #ea868f;">
+            <button class="btn h-100 w-100 fs-4 fw-bold">Personel Listesi</button>
+        </div>
+    </form>
+    <form asp-controller="Hr" asp-action="CheckForms" class="card col-sm-4" style="height:25vh">
+        <div class="card-body" style="background-color: #e35d6a;">
+            <button class="btn h-100 w-100 fs-4 fw-bold">Form Gönderimi</button>
+        </div>
+    </form>
+</div>

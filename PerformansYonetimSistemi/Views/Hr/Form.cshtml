@@ -1,0 +1,58 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewBag.Title = "Form";
+}
+<div class="card mb-1">
+    <div class="card-body">
+        <form asp-controller="Hr" asp-action="CreateForm" class="col-sm-12 d-flex justify-content-between mb-2">
+            <div class="col-sm-6">
+                <input class="form-control form-control-sm col-sm-12" type="text" name="Name" placeholder="Şablon adını yazınız...">
+            </div>
+            <div class="col-sm-2">
+                <input class="form-control form-control-sm col-sm-12" type="text" name="Explanation" placeholder="Şablon Açıklaması">
+            </div><div class="col-sm-3">
+                <button class="btn btn-sm btn-outline-success w-100 h-100" type="submit">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <div class="col-sm-12">
+            <table class="table table-sm table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Kod</th>
+                        <th>İsim</th>
+                        <th>Açıklama</th>
+                        <th class="text-center">Oluşturan</th>
+                        <th class="text-center">Oluşturma Tarihi</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.FormMases.OrderBy(o => o.Id))
+                    {
+                        <tr>
+                            <td class="text-center">@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.Explanation</td>
+                            <td class="text-center">@item.CreatedBy</td>
+                            <td class="text-center">@item.CreatedAt.ToString("dd.MM.yyyy HH:ss")</td>
+                            <td class="d-flex justify-content-end">
+                                <form asp-controller="Hr" asp-action="EditForm">
+                                    <button class="btn btn-sm btn-outline-primary me-2" name="Id" value="@item.Id">
+                                        <span class="far fa-edit"></span>
+                                    </button>
+                                </form>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <span class="far fa-trash-alt"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
