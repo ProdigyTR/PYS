@@ -1,38 +1,38 @@
 ﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
 @{
-    ViewData["title"] = "Kpi Kart Oluştur";
+    ViewData["title"] = "Performans Kart Oluştur";
 }
 <style>
-     .choices {
-         font-size: 0.6944444444rem !important;
-     }
+    .choices {
+        font-size: 0.6944444444rem !important;
+    }
 
-     .choices__inner {
-         font-size: 0.6944444444rem !important;
-         min-height: 24.66px !important;
-         padding: 0px 0px 0px 0px;
-         line-height: 0rem !important;
-     }
+    .choices__inner {
+        font-size: 0.6944444444rem !important;
+        min-height: 24.66px !important;
+        padding: 0px 0px 0px 0px;
+        line-height: 0rem !important;
+    }
 
-     .choices__list--multiple .choices__item {
-         font-size: 0.6944444444rem !important;
-     }
+    .choices__list--multiple .choices__item {
+        font-size: 0.6944444444rem !important;
+    }
 
-     .choices__list--dropdown .choices__item {
-         font-size: 0.6944444444rem !important;
-     }
+    .choices__list--dropdown .choices__item {
+        font-size: 0.6944444444rem !important;
+    }
 
-     .choices__list--dropdown .choices__item--selectable::after {
-         font-size: 8px !important;
-     }
+    .choices__list--dropdown .choices__item--selectable::after {
+        font-size: 8px !important;
+    }
 
-     .choices__heading {
-         font-size: 8px !important;
-     }
+    .choices__heading {
+        font-size: 8px !important;
+    }
 
-     .choices__input {
-         font-size: 12px !important;
-     }
+    .choices__input {
+        font-size: 12px !important;
+    }
 </style>
 <form asp-controller="KPI" asp-action="CardToEmployee" method="post" class="col-sm-12 d-flex justify-content-between">
     <div class="card col-sm-4">
@@ -45,12 +45,36 @@
                 }
             </select>
         </div>
-    </div>    
+    </div>
     <div class="card col-sm-8 ms-1">
         <div class="card-body">
-            <div  class="col-sm-12 d-flex justify-content-between">
-                <button class="btn btn-outline-success" style="width:48%" type="submit" name="route" value="new">Yeni Oluştur</button>                
+            <div class="col-sm-12 d-flex justify-content-between">
+                <button class="btn btn-outline-success" style="width:48%" type="button" data-bs-toggle="modal" data-bs-target="#dateModal">Yeni Oluştur</button>
                 <button class="btn btn-outline-primary" style="width:48%" type="submit" name="route" value="edit">Mevcut Kartı Düzenle</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="dateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
+            <div class="modal-content position-relative">
+                <div class="modal-body p-0">
+                    <div class="rounded-top-lg py-3 ps-4 pe-6 bg-light">
+                        <h4 class="mb-1" id="modalExampleDemoLabel">Kart Dönem Aralığı Tarih Girişi</h4>
+                    </div>
+                    <div class="p-4 pb-0">
+                        <div class="mb-3">
+                            <label class="col-form-label" for="recipient-name">Başlangıç Tarihi</label>
+                            <input class="form-control" type="date" name="startDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label" for="recipient-name">Bitiş Tarihi</label>
+                            <input class="form-control" type="date" name="endDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit" name="route" value="new">Oluştur</button>
+                </div>
             </div>
         </div>
     </div>

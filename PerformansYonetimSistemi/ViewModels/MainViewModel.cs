@@ -15,7 +15,7 @@ namespace PerformansYonetimSistemi.ViewModels
         public List<Position> Positions { get; set; }
         public List<KPI> KPIs { get; set; }
         public List<Target> Targets { get; set; }
-        public List<KpiScoreCard> KpiScoreCards { get; set; }
+        public List<PerformanceCard> PerformanceCards { get; set; }
         public List<EmployeeKpi> EmployeeKpis { get; set; }
     }
 }

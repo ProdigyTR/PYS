@@ -9,7 +9,6 @@
 </style>
 @foreach (var item in Model.Employees)
 {
-    int sira = 1;
     <div class="card mb-1">
         <div class="card-body">
             <div class="col-sm-12 d-flex">
@@ -21,28 +20,69 @@
                         <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
                     </div>
                 </div>
-                @foreach(var ek in Model.EmployeeKpis.Where(w=>w.TC==item.TC))
+                @foreach (var ek in Model.EmployeeKpis.Where(w => w.TC == item.TC))
                 {
-                    
                     <div class="card col-sm-9">
                         <div class="card-header bg-soft-secondary">
-                            <span class="badge bg-info">#@sira</span>
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <span class="badge bg-info">Performans Kartı</span>
+                                    <span class="badge bg-warning">@ek.StartDate.ToShortDateString() - @ek.EndDate.ToShortDateString()</span>
+                                </div>
+                                <div>
+                                    <form asp-controller="KPI" asp-action="UpdatePoint" method="post">
+                                        <button class="btn btn-sm btn-outline-success" type="submit" onmouseover="getPointData('@ek.Id')">Puanları Güncelle</button>
+                                        <input class="d-none" name="pointData" id="pointData@(ek.Id)" />
+                                    </form>
+                                </div>
+                                <div>
+                                    <span class="badge badge-soft-primary">Hedeflerin Toplam Oranı</span>
+                                    <span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body bg-soft-info">
                             <div class="row justify-content-around">
-                                @foreach (var ksc in Model.KpiScoreCards.Where(w =>w.KpiId==ek.Id).OrderBy(o => o.Id))
+                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.KpiId == ek.Id).OrderBy(o => o.Id))
                                 {
-                                    <div class="card col-sm-5 mb-1">
+                                    string radioChecked = "checked";
+                                    int point = ksc.Point;
+                                    <div class="card col-sm-12 mb-1">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
-                                                <label>@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id ==ksc.Target).Select(s => s.Name).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()</label>
-                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@ksc.Id)">@(ksc.Ratio)%</span>
+                                                <label>@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id ==ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()</label>
+                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@ksc.Id)">%@(ksc.Ratio)</span>
                                             </div>
-                                            <label class="form-label form-label-sm fs--2 text-400">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.Explanation).FirstOrDefault()</label>
-                                            <div class="col-sm-12 d-flex">
-                                                <div class="progress mb-3 w-100" style="height:31px" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                    <button class="btn btn-sm btn-outline-info fs--2 me-2" data-bs-toggle="modal" data-bs-target="#progressModal" onclick="setIdProgress(@ksc.Id)"><span class="far fa-edit"></span></button>
-                                                    <div class="progress-bar" style="width: @(ksc.Progress)%">@(ksc.Progress)%</div>
+                                            <label class="form-label form-label-sm fs--2 text-400">@Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()</label>
+                                            <div class="col-sm-12 d-flex justify-content-between">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="radioBtn1@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point==1)
+                                                    {
+                                                        @radioChecked
+                                                    }/>
+                                                    <label class="form-check-label fs-1" for="radioBtn1@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-danger">1</span></label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="radioBtn2@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 2)
+                                                    {
+                                                        @radioChecked
+                                                    }/>
+                                                    <label class="form-check-label fs-1" for="radioBtn2@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-warning">2</span></label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="radioBtn3@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 3)
+                                                    {
+                                                        @radioChecked
+                                                    }/>
+                                                    <label class="form-check-label fs-1" for="radioBtn3@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-primary">3</span></label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" id="radioBtn4@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 4)
+                                                    {
+                                                         @radioChecked;
+                                                    }
+                                                    />
+                                                    <label class="form-check-label fs-1" for="radioBtn4@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-success">4</span></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -51,31 +91,11 @@
                             </div>
                         </div>
                     </div>
-                    sira++;
                 }
-               
             </div>
         </div>
     </div>
 }
-<div class="modal fade" id="progressModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
-        <form asp-asp-controller="KPI" asp-action="UpdateProgress" method="post" class="modal-content position-relative">
-            <div class="modal-body p-0">
-                <div class="p-4 pb-0">
-                    <div class="mb-3">
-                        <label class="col-form-label" for="recipient-name">İlerleme Oranı Giriniz</label>
-                        <input class="form-control" type="number" value="" name="Progress" />
-                        <input class="d-none" name="Id" Id="IdProgress" value="" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="submit">Güncelle</button>
-            </div>
-        </form>
-    </div>
-</div>
 <div class="modal fade" id="ratioModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
         <form asp-asp-controller="KPI" asp-action="UpdateRatio" method="post" class="modal-content position-relative">
@@ -95,10 +115,17 @@
     </div>
 </div>
 <script>
-    function setIdProgress(p) {
-        document.getElementById("IdProgress").value = p;
-    };
     function setIdRatio(p) {
         document.getElementById("IdRatio").value = p;
+    };
+    function getPointData(kpiId) {
+        var jsonData = "";
+        var rb = document.getElementsByClassName('form-check-input');
+        for (i = 0; i < rb.length; i++) {
+            if (rb[i].checked) {
+                jsonData = jsonData + rb[i].name + '-' + rb[i].parentNode.children[1].children[0].innerHTML + ',';
+            }
+        }
+        document.getElementById('pointData' + kpiId).value = jsonData.substring(0, jsonData.length - 1);
     };
 </script>

@@ -1,6 +1,6 @@
 ﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
 @{
-    ViewData["title"] = "Kpi Kart Oluştur";
+    ViewData["title"] = "Performans Kartı Oluştur";
 }
 <style>
     .choices {
@@ -38,75 +38,80 @@
     @foreach (var item in Model.Employees)
     {
         <div class="card col-sm-4">
-            <div class="card-body">
-                <input class="form-control" value="@item.Name @item.LastName" readonly />
-                <input class="d-none" name="TC" value="@item.TC" />
+            <div class="card-body fs--2">
+                <div class="d-flex justify-content-between">
+                    <img class="rounded-circle img-thumbnail shadow-sm" src="/img/employee/@(item.TC).jpg" width="200">
+                    <div>
+                        <div class="text-end">
+                            <span class="badge badge-soft-warning">Performans Kartı</span>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge badge-soft-info">@Model.EmployeeKpis.Select(s=>s.StartDate.ToShortDateString()).FirstOrDefault()</span>
+                            <span class="badge badge-soft-info">@Model.EmployeeKpis.Select(s=>s.EndDate.ToShortDateString()).FirstOrDefault()</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <h5 class="mb-1">@item.Name @item.LastName</h5>
+                    <h6 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h6>
+                    <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
+                </div>
             </div>
         </div>
     }
-    <div class="card col-sm-8 ms-1">
-        <div class="card-body">
-            <table class="table table-sm table-hovered table-bordered table-striped fs--2">
-                <thead>
+    <div class="card col-sm-8 ms-1 scrollbar" style="height:37vh">
+        <table class="table table-sm table-hovered table-bordered table-striped fs--2">
+            <thead class="position-sticky top-0 bg-secondary text-white">
+                <tr>
+                    <th class="text-center">KPI</th>
+                    <th class="text-center">Hedef</th>
+                    <th class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Targets.Where(w => !Model.PerformanceCards.Select(s => s.TargetId).Contains(w.Id)))
+                {
                     <tr>
-                        <th class="text-center">Hedef</th>
-                        <th class="text-center">Açıklama</th>
-                        <th class="text-center">Başlangıç</th>
-                        <th class="text-center">Bitiş</th>
-                        <th></th>
+                        <td class="align-middle text-nowrap">@Model.KPIs.Where(w=>w.Code==item.KpiCode).Select(s=>s.Name).FirstOrDefault()</td>
+                        <td class="align-middle text-wrap">@item.Explanation</td>
+                        <td class="text-center align-middle">
+                            <form asp-controller="KPI" asp-action="EmployeeCard" method="post">
+                                <button class="btn btn-sm btn-outline-success fs--2" value="@item.Id" name="TargetId">
+                                    <span class="fas fa-plus"></span>
+                                </button>
+                                <input class="d-none" name="KpiId" type="number" value="@Model.EmployeeKpis.Select(s=>s.Id).FirstOrDefault()" />
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var tg in Model.Targets)
-                    {
-                        <tr>
-                            <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == tg.Name).Select(s => s.Name).FirstOrDefault()</td>
-                            <td class="align-middle text-wrap">@tg.Explanation</td>
-                            <td class="align-middle text-center">@tg.StartTime.ToShortDateString() @tg.StartTime.ToShortTimeString()</td>
-                            <td class="align-middle text-center">@tg.EndTime.ToShortDateString() @tg.EndTime.ToShortTimeString()</td>
-                            <td class="text-center align-middle">
-                                <form asp-controller="KPI" asp-action="EmployeeCard" method="post">
-                                    <button class="btn btn-sm btn-outline-success fs--2" type="submit" value="@tg.Id" name="Target">
-                                        <span class="fas fa-plus"></span>
-                                    </button>
-                                    <input class="d-none" name="KpiId" value="@Model.EmployeeKpis.Select(s=>s.Id).FirstOrDefault()" />
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="card col-sm-12 mt-1">
     <div class="card-body">
         <div class="col-sm-12 mt-1">
-            <table class="table table-sm table-striped table-bordered">
+            <table class="table table-sm table-striped table-bordered fs--2">
                 <thead>
-                    <tr>
+                    <tr class="bg-soft-primary">
+                        <th class="text-center">KPI</th>
                         <th class="text-center">Hedef</th>
-                        <th class="text-center">Açıklama</th>
-                        <th class="text-center">Başlangıç</th>
-                        <th class="text-center">Bitiş</th>
                         <th></th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var item in Model.KpiScoreCards)
+                    @foreach (var item in Model.PerformanceCards)
                     {
                         <tr>
-                            <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == item.Target).Select(s => s.Name).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()</td>
-                            <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.Explanation).FirstOrDefault()</td>
-                            <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.StartTime.ToShortDateString() + " " + s.StartTime.ToShortTimeString()).FirstOrDefault()</td>
-                            <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == item.Target).Select(s => s.EndTime.ToShortDateString() + " " + s.EndTime.ToShortTimeString()).FirstOrDefault()</td>
+                            <td class="align-middle text-nowrap">@Model.KPIs.Where(w=>w.Code==Model.Targets.Where(w=>w.Id==item.TargetId).Select(s=>s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()</td>
+                            <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == item.TargetId).Select(s => s.Explanation).FirstOrDefault()</td>
                             <td class="text-center align-middle">
-                                <form asp-controller="KPI" asp-action="DeleteKpiScoreCard" method="post">
+                                <form asp-controller="KPI" asp-action="DeletePerformanceCard" method="post">
                                     <button class="btn btn-sm btn-outline-danger fs--2" value="@item.Id" name="Id">
                                         <span class="far fa-trash-alt"></span>
                                     </button>
-                                    <input class="d-none" name="Id" value="@item.Id"/>
+                                    <input class="d-none" name="Id" value="@item.Id" />
                                 </form>
                             </td>
                         </tr>

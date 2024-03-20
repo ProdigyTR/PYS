@@ -44,14 +44,14 @@
                     <h4 class="mb-1">@item.Name @item.LastName</h4>
                     <h5 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h5>
                     <p class="text-500">@Model.Departments.Where(w =>    w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
-                    <input class="d-none" name="Employee" value="@item.TC"/>
+                    <input class="d-none" name="Employee" value="@item.TC" />
                 </div>
             }
         </div>
         <div class="col-sm-12 d-flex justify-content-between">
-            <div class="col-sm-7">
-                <div class="col-sm-12 mb-3">
-                    <select class="form-select form-select-sm fs--2 js-choice" name="Name" data-options='{"removeItemButton":true,"placeholder":true,"searchResultLimit":10}' required>
+            <div class="col-sm-10 pe-1">
+                <div class="col-sm-12 mb-1">
+                    <select class="form-select form-select-sm fs--2 js-choice" name="KpiCode" data-options='{"removeItemButton":true,"placeholder":true,"searchResultLimit":10}' required>
                         <option class="fs--2" value="">KPI Seçiniz...</option>
                         @foreach (var item in Model.KPIs)
                         {
@@ -59,71 +59,55 @@
                         }
                     </select>
                 </div>
-                <div class="col-sm-12 mb-3">
+                <div class="col-sm-12">
                     <input placeholder="Hedef Açıklama" type="text" class="form-control form-control-sm fs--2" name="Explanation" required />
-                </div>                
-            </div>
-            <div class="col-sm-4">
-                <div class="col-sm-12 d-flex mb-1">
-                    <label class="form-label form-label-sm fs--2 text-nowrap mt-2 me-2 w-50 text-end">Başlangıç Tarihi:</label>
-                    <input class="form-control form-control-sm fs--2 w-50" type="date" name="StartTime" required />
-                </div>
-                <div class="col-sm-12 d-flex">
-                    <label class="form-label form-label-sm fs--2 text-nowrap mt-2 me-2 w-50  text-end">Bitiş Tarihi:</label>
-                    <input class="form-control form-control-sm fs--2 w-50" type="date" name="EndTime" required />
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12">
-            <button class="btn btn-sm btn-outline-success w-100" type="submit">Hedef Ekle</button>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-outline-success w-100 h-100" type="submit">Hedef Ekle</button>
+            </div>
         </div>
     </div>
 </form>
-<div class="card">
-    <div class="card-body">
-        <table class="table table-sm table-hovered table-bordered table-striped fs--2">
-            <thead>
-                <tr>
-                    <th class="text-center">Hedef</th>
-                    <th class="text-center">Açıklama</th>
-                    <th class="text-center">Çalışan</th>
-                    <th class="text-center">Başlangıç</th>
-                    <th class="text-center">Bitiş</th>
-                    <th class="text-center">Durum</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Targets)
+<div class="card scrollbar" style="height:41vh">
+    <table class="table table-sm table-hovered table-bordered table-striped fs--2">
+        <thead class="position-sticky top-0 bg-secondary text-white">
+            <tr>
+                <th class="text-center">KPI</th>
+                <th class="text-center">Hedef</th>
+                <th class="text-center">Çalışan</th>
+                <th class="text-center">Durum</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Targets)
+            {
+                //Active
+                string activeSpan = "";
+                if (@item.IsActive)
                 {
-                    //Active
-                    string activeSpan = "";
-                    if (@item.IsActive)
-                    {
-                        activeSpan = "far fa-check-circle text-success";
-                    }
-                    else
-                    {
-                        activeSpan = "far fa-times-circle text-danger";
-                    }
-                    //Active
-                    <tr>
-                        <td class="align-middle text-nowrap">@item.Name</td>
-                        <td class="align-middle text-wrap">@item.Explanation</td>
-                        <td class="align-middle text-nowrap text-center">@Model.Employees.Where(w=>w.TC==item.Employee).Select(s=>s.Name+" "+s.LastName).FirstOrDefault()</td>
-                        <td class="align-middle text-center">@item.StartTime.ToShortDateString()</td>
-                        <td class="align-middle text-center">@item.StartTime.ToShortDateString()</td>
-                        <td class="align-middle text-center"><span class="@activeSpan"></span></td>
-                        <td class="text-center align-middle">
-                            <form asp-controller="Target" asp-action="Delete" method="post">
-                                <button class="btn btn-sm btn-outline-danger fs--2" value="@item.Id" name="Id">
-                                    <span class="far fa-trash-alt"></span>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                    activeSpan = "far fa-check-circle text-success";
                 }
-            </tbody>
-        </table>
-    </div>
+                else
+                {
+                    activeSpan = "far fa-times-circle text-danger";
+                }
+                //Active
+                <tr>
+                    <td class="align-middle text-nowrap">@Model.KPIs.Where(w=>w.Code==item.KpiCode).Select(s=>s.Name).FirstOrDefault()</td>
+                    <td class="align-middle text-wrap">@item.Explanation</td>
+                    <td class="align-middle text-nowrap text-center">@Model.Employees.Where(w=>w.TC==item.Employee).Select(s=>s.Name+" "+s.LastName).FirstOrDefault()</td>
+                    <td class="align-middle text-center"><span class="@activeSpan"></span></td>
+                    <td class="text-center align-middle">
+                        <form asp-controller="Target" asp-action="Delete" method="post">
+                            <button class="btn btn-sm btn-outline-danger fs--2" value="@item.Id" name="Id">
+                                <span class="far fa-trash-alt"></span>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

@@ -42,7 +42,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             mvm = new MainViewModel
             {
                 Employees = await _context.Employees.Where(w=>w.IsActive && w.TC==TC).OrderBy(o=>o.Name).ThenBy(t=>t.LastName).ToListAsync(),
-                Targets = await _context.Targets.Where(w => w.IsActive && w.Employee == TC).OrderBy(t => t.Name).ToListAsync(),
+                Targets = await _context.Targets.Where(w => w.IsActive && w.Employee == TC).OrderBy(t => t.Explanation).ToListAsync(),
                 KPIs = await _context.KPIs.Where(w => w.IsActive && w.Departmant == departmant).OrderBy(t => t.Name).ToListAsync()
             };
             mvm.Positions=await _context.Positions.Where(w=>w.IsActive && w.Code==mvm.Employees.Select(s=>s.Position).FirstOrDefault()).ToListAsync();

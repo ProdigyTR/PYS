@@ -1,44 +1,44 @@
 ﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
 @{
-    ViewData["title"] = "Kpi Kart Oluştur";
+    ViewData["title"] = "Performans Kartı Oluştur";
 }
-@foreach (var item in Model.Employees)
-{
-    <div class="col-sm-12 mb-1">
-        <div class="card col-sm-4">
-            <div class="card-body">
-                <input class="form-control" value="@item.Name @item.LastName" readonly />
-                <input class="d-none" name="TC" value="@item.TC" />
+<div class="card col-sm-12">
+    <div class="card-body">
+        @foreach (var item in Model.Employees)
+        {
+            <div class="col-sm-3">
+                <img class="rounded-circle img-thumbnail shadow-sm" src="/img/employee/@(item.TC).jpg" width="200">
+                <div class="col-sm-12">
+                    <h4 class="mb-1">@item.Name @item.LastName</h4>
+                    <h5 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h5>
+                    <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
+                </div>
             </div>
-        </div>
+        }
     </div>
-}
+</div>
 @foreach (var item in Model.EmployeeKpis)
 {
     int sira = 1;
-    <div class="card col-sm-12 mb-1">
+    <div class="card col-sm-12 mt-1">
         <div class="card-body">
             <form asp-controller="KPI" asp-action="EmployeeCard" method="get" class="col-sm-12">
                 <button class="btn btn-lg btn-outline-primary" value="@item.Id" name="kpiId">#@sira</button>
-                <input class="d-none" name="TC" value="@item.TC"/>
+                <input class="d-none" name="TC" value="@item.TC" />
             </form>
             <div class="col-sm-12 mt-1">
                 <table class="table table-sm table-striped table-bordered">
                     <thead>
-                        <tr>
+                        <tr class="bg-soft-primary">
+                            <th class="text-center">KPI</th>
                             <th class="text-center">Hedef</th>
-                            <th class="text-center">Açıklama</th>
-                            <th class="text-center">Başlangıç</th>
-                            <th class="text-center">Bitiş</th>
                     </thead>
                     <tbody>
-                        @foreach (var ksc in Model.KpiScoreCards)
+                        @foreach (var ksc in Model.PerformanceCards.Where(w=>w.KpiId==item.Id))
                         {
                             <tr>
-                                <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.Name).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()</td>
-                                <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.Explanation).FirstOrDefault()</td>
-                                <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.StartTime.ToShortDateString() + " " + s.StartTime.ToShortTimeString()).FirstOrDefault()</td>
-                                <td class="align-middle text-center">@Model.Targets.Where(w => w.Id == ksc.Target).Select(s => s.EndTime.ToShortDateString() + " " + s.EndTime.ToShortTimeString()).FirstOrDefault()</td>
+                                <td class="align-middle text-nowrap">@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()</td>
+                                <td class="align-middle text-wrap">@Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()</td>
                             </tr>
                         }
                     </tbody>

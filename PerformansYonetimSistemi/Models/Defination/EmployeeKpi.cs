@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace PerformansYonetimSistemi.Models.Defination
 {
@@ -7,5 +8,7 @@ namespace PerformansYonetimSistemi.Models.Defination
         [Key]
         public int Id { get; set; }
         public string TC { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

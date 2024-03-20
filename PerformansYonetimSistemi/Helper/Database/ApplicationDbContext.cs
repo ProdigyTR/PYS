@@ -20,7 +20,7 @@ namespace PerformansYonetimSistemi.Helper.Database
         public DbSet<Position> Positions { get; set; }
         public DbSet<KPI> KPIs { get; set; }
         public DbSet<Target> Targets { get; set; }
-        public DbSet<KpiScoreCard> KpiScoreCards { get; set; }
+        public DbSet<PerformanceCard> PerformanceCards { get; set; }
         public DbSet<EmployeeKpi> EmployeeKpis { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,7 +34,7 @@ namespace PerformansYonetimSistemi.Helper.Database
             modelBuilder.Entity<Position>().ToTable("Position");
             modelBuilder.Entity<KPI>().ToTable("KPI");
             modelBuilder.Entity<Target>().ToTable("Target");
-            modelBuilder.Entity<KpiScoreCard>().ToTable("KpiScoreCard");
+            modelBuilder.Entity<PerformanceCard>().ToTable("PerformanceCard");
             modelBuilder.Entity<EmployeeKpi>().ToTable("EmployeeKpi");
         }      
     }
