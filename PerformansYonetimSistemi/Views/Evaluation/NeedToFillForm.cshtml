@@ -1,0 +1,271 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    Layout = null;
+
+    ViewData["Title"] = "Performans Değerlendirme Formu";
+    TimeSpan fark = DateTime.Now - @Model.Employees.Select(s => s.DateOfRecruitment).FirstOrDefault();
+
+    // Yılları ve ayları hesapla
+    int yilFarki = (int)(fark.TotalDays / 365.25); // ortalama yıl uzunluğu kullanarak
+    int ayFarki = (int)((fark.TotalDays % 365.25) / 30.436875); // ortalama ay uzunluğu kullanarak
+    string kidemSuresi = "";
+    // Sonucu yazdır
+    if (yilFarki > 0)
+    {
+        kidemSuresi = $"{yilFarki} yıl {ayFarki} ay";
+    }
+    else
+    {
+        kidemSuresi = $"{ayFarki} ay";
+    }
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PerformansYonetimSistemi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/PerformansYonetimSistemi.styles.css" asp-append-version="true" />
+    <link href="~/img/logo/pyslogo.png" rel="apple-touch-icon" sizes="180x180">
+    <link href="~/img/logo/pyslogo.png" rel="icon" type="image/png" sizes="32x32">
+    <link href="~/img/logo/pyslogo.png" rel="icon" type="image/png" sizes="16x16">
+    <link href="~/img/logo/favicon.ico" rel="shortcut icon" type="image/x-icon">
+</head>
+
+<body>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <form asp-controller="Evaluation" asp-action="UpdateNeedToFillForm" method="post" class="card">
+                <div class="card-body" style="background-color:#e9ecef">
+                    <div class="col-sm-12 text-end">
+                        <h6>@DateTime.Now.ToString("dd.MM.yyyy")</h6>
+                    </div>
+                    <div class="col-sm-12 text-center">
+                        <label class="form-label fw-bold">@Model.FormMases.Select(s => s.Name).FirstOrDefault()</label>
+                    </div>
+                    <hr />
+                    <table class="fw-bold mb-3" style="margin-left:auto;margin-right:auto;">
+                        <tbody>
+                            <tr>
+                                <td>Adı Soyadı</td>
+                                <td>:</td>
+                                <td>@Model.Employees.Select(s=>s.Name+" "+s.LastName).FirstOrDefault()</td>
+                            </tr>
+                            <tr>
+                                <td>Bölüm</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Görevi/Ünvanı</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>T.C. Kimlik No</td>
+                                <td>:</td>
+                                <td>@Model.Employees.Select(s => s.TC.Substring(0, 2) + "*******" + s.TC.Substring(s.TC.Length - 2)).FirstOrDefault()</td>
+                            </tr>
+                            <tr>
+                                <td>İşe Giriş Tarihi</td>
+                                <td>:</td>
+                                <td>@Model.Employees.Select(s => s.DateOfRecruitment.ToShortDateString()).FirstOrDefault()</td>
+                            </tr>
+                            <tr>
+                                <td>Eğitim Düzeyi</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Kıdem Süresi</td>
+                                <td>:</td>
+                                <td>@kidemSuresi</td>
+                            </tr>
+                            <tr>
+                                <td>Toplam İş Tecrübesi</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                            @foreach (var item in Model.FormDetails.Where(w => w.TextLevel == 0).OrderBy(o => o.Sequence))
+                            {
+                                <tr>
+                                    <td>
+                                        <label class="form-label fw-bold text-primary">@item.Explanation</label>
+                                    </td>
+                                </tr>
+                                @foreach (var itemLt in Model.FormDetails.Where(w => w.TextLevel == 1 && w.Title == item.Id.ToString() && !string.IsNullOrEmpty(w.Title)).OrderBy(o => o.Sequence))
+                                {
+                                    <tr>
+                                        <td>
+                                            <label><ul class="form-label fs--2 fw-bold fst-italic align-middle text-info">@itemLt.Explanation :</ul></label>
+                                        </td>
+                                    </tr>
+                                    @foreach (var itemDt in Model.FormDetails.Where(w => w.TextLevel == 2 && w.LowerTitle == itemLt.Id.ToString() && !string.IsNullOrEmpty(w.LowerTitle)).OrderBy(o => o.Sequence))
+                                    {
+                                        <tr class="fw-bold">
+                                            <td>
+                                                <label class="form-label fs--2"><li>@itemDt.Explanation</li></label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="d-flex justify-content-between">
+                                                <div class="text-center">
+                                                    <span>[1 - ÇOK ZAYIF]</span><br />
+                                                    <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="1" required />
+                                                </div>
+                                                <div class="text-center">
+                                                    <span>[2 - ZAYIF]</span><br />
+                                                    <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="2" required />
+                                                </div>
+                                                <div class="text-center">
+                                                    <span>[3 - ORTA]</span><br />
+                                                    <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="3" required />
+                                                </div>
+                                                <div class="text-center">
+                                                    <span>[4 - İYİ]</span><br />
+                                                    <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="4" required />
+                                                </div>
+                                                <div class="text-center">
+                                                    <span>[5- ÇOK İYİ]</span><br />
+                                                    <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="5" required />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                            <tr>
+                                <td>
+                                    <hr class="bg-black w-100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold pt-5">
+                                    Daha üst bir görev için aday olabilir mi, ne zaman?
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="d-flex">
+                                    <div class="text-nowrap text-center me-3">
+                                        <input class="form-check-input" type="radio" name="ustGorev" value="EVET">
+                                        <span>EVET</span>
+                                    </div>
+                                    <div class="text-center d-flex w-100 me-3">
+                                        <select class="form-select form-select-sm fs--2" name="ustGorevEvet" id="ustGorevEvet">
+                                            <option value="">Evet ise seçiniz...</option>
+                                            <option value="1 YIL">1 YIL</option>
+                                            <option value="1-2 YIL">1-2 YIL</option>
+                                            <option value="2+ YIL">2+ YIL</option>
+                                        </select>
+                                    </div>
+                                    <div class="text-nowrap text-center me-3">
+                                        <input class="form-check-input" type="radio" name="ustGorev" value="HAYIR">
+                                        <span>HAYIR</span>
+                                    </div>
+                                    <div class="text-center d-flex w-100">
+                                        <span class="text-nowrap me-3 fw-bold">NEDEN :</span>
+                                        <input class="form-control form-control-sm fs--2" type="text" name="ustGorevHayir" id="ustGorevHayir">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr class="bg-black w-100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Halen yürüttüğü görev ile eş düzeyde, başka bir görevde çalışması önerilebilir mi?</td>
+                            </tr>
+                            <tr>
+                                <td class="d-flex">
+                                    <div class="text-nowrap text-center me-3">
+                                        <input class="form-check-input" type="radio" name="ekGorev" value="EVET">
+                                        <span>EVET</span>
+                                    </div>
+                                    <div class="text-center d-flex w-100 me-3">
+                                        <span class="text-nowrap me-3 fw-bold">HANGİ GÖREV :</span>
+                                        <input class="form-control form-control-sm fs--2" type="text" name="ekGorevEvet">
+                                    </div>
+                                    <div class="text-nowrap text-center me-3">
+                                        <input class="form-check-input" type="radio" name="ekGorev" value="HAYIR">
+                                        <span>HAYIR</span>
+                                    </div>
+                                    <div class="text-center d-flex w-100">
+                                        <span class="text-nowrap me-3 fw-bold">NEDEN :</span>
+                                        <input class="form-control form-control-sm fs--2" type="text" name="ekGorevHayir">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr class="bg-black w-100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Önerilen Eğitimler (Çalışan artan sorumluluklarına hangi yollarla hazır olur? Başarılı olması için hangi ek eğitime ihtiyacı olacaktır?)</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="1-" name="egitimOneri1">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="2-" name="egitimOneri2">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="3-" name="egitimOneri3">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="4-" name="egitimOneri4">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="5-" name="egitimOneri5">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr class="bg-black w-100">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold">Şirket içi Alınacak Aksiyonlar </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="1-" name="alinacakAksiyon1">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="2-" name="alinacakAksiyon2">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="3-" name="alinacakAksiyon3">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="4-" name="alinacakAksiyon4">
+                                    <input class="form-control form-control-sm fs--2 w-100" type="text" placeholder="5-" name="alinacakAksiyon5">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-12 mt-3">
+                    <button class="btn btn-lg w-100 btn-success" type="submit" onmouseover="getDate()">Formu Gönder</button>
+                </div>
+                <input class="d-none" type="text" id="stringData" name="stringData" />
+                <input class="d-none" type="text" name="guid" value="@Model.NeedToFillForms.Select(s=>s.Guid).FirstOrDefault()" />
+            </form>
+            <script>
+                function getDate() {
+                    var jsonData = "";
+                    var rb = document.getElementsByClassName('form-check-input');
+                    for (i = 0; i < rb.length; i++) {
+                        if (rb[i].checked) {
+                            jsonData = jsonData + rb[i].name + '-' + rb[i].value + ',';
+                        }
+                    }
+                    document.getElementById('stringData').value = jsonData.substring(0, jsonData.length - 1);
+                };
+            </script>
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - EKMAS Performans Yönetim Sistemi - İnsan Kaynakları Müdürlüğü <a class="text-white" href="http://mertbagbasi.com.tr"> - Developed By <b>Mert Bağbaşı</b></a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -17,5 +17,7 @@ namespace PerformansYonetimSistemi.ViewModels
         public List<Target> Targets { get; set; }
         public List<PerformanceCard> PerformanceCards { get; set; }
         public List<EmployeeKpi> EmployeeKpis { get; set; }
+        public List<Evaluation> Evaluations { get; set; }
+        public List<EvaluationForm> EvaluationForms { get; set; }
     }
 }

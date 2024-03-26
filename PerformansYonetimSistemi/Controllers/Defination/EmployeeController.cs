@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models.Defination;
+using PerformansYonetimSistemi.Models.HR;
 using PerformansYonetimSistemi.ViewModels;
 
 namespace PerformansYonetimSistemi.Controllers.Defination
@@ -91,6 +92,35 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.Remove(employee);
             _context.SaveChanges();
             return RedirectToAction("List");
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> PerformanceReviewsFilter()
+        {
+            ViewBag.CurrentPage = "/Employee/PerformanceReviews";
+            mvm = new MainViewModel
+            {
+                Employees = await _context.Employees.Where(w => w.IsActive).ToListAsync()
+            };
+            return View(mvm);
+        }
+        [HttpGet]
+        public async Task<IActionResult> PerformanceReviews(string TC)
+        {
+            ViewBag.CurrentPage = "/Employee/PerformanceReviews";
+            mvm = new MainViewModel
+            {
+                Employees = await _context.Employees.Where(w => w.TC == TC).ToListAsync(),
+                
+            };
+            mvm.Positions = await _context.Positions.Where(w => w.IsActive && mvm.Employees.Select(s => s.Position).Contains(w.Code)).ToListAsync();
+            mvm.Departments = await _context.Departments.Where(w => w.IsActive && mvm.Employees.Select(s => s.Department).Contains(w.Code)).ToListAsync();
+            mvm.EmployeeKpis = await _context.EmployeeKpis.Where(w=>w.TC==TC).ToListAsync();
+            mvm.PerformanceCards = await _context.PerformanceCards.Where(w=>mvm.EmployeeKpis.Select(s=>s.Id).Contains(w.KpiId)).ToListAsync();
+            mvm.Targets = await _context.Targets.Where(w => mvm.PerformanceCards.Select(s => s.TargetId).Contains(w.Id)).ToListAsync();
+            mvm.KPIs = await _context.KPIs.Where(w => mvm.Targets.Select(s => s.KpiCode).Contains(w.Code)).ToListAsync();
+            mvm.NeedToFillForms = await _context.NeedToFillForms.Where(w => w.Employee == TC).ToListAsync();
+            return View(mvm);
         }
     }
 }

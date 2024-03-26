@@ -201,9 +201,17 @@
                                     </span>
                                     <span class="nav-link-text ps-1">Formlar</span>
                                 </div>
-                            </a>       
+                            </a> 
+                            <a class="nav-link @(ViewBag.CurrentPage == "/Evaluation/Create" ? "active" : "")" href="/Evaluation/Create">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon">
+                                        <span class="fas fa-file-alt"></span>
+                                    </span>
+                                    <span class="nav-link-text ps-1">Değerlendirme</span>
+                                </div>
+                            </a>
                             <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
-                                <div class="col-auto navbar-vertical-label">Raporlar</div>
+                                <div class="col-auto navbar-vertical-label">İşlemler</div>
                                 <div class="col ps-0">
                                     <hr class="mb-0 navbar-vertical-divider">
                                 </div>
@@ -214,6 +222,20 @@
                                         <span class="far fa-id-card"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">KPI Skor Kartları</span>
+                                </div>
+                            </a>                           
+                            <div class="row navbar-vertical-label-wrapper mt-3 mb-2">
+                                <div class="col-auto navbar-vertical-label">Raporlar</div>
+                                <div class="col ps-0">
+                                    <hr class="mb-0 navbar-vertical-divider">
+                                </div>
+                            </div>
+                            <a class="nav-link @(ViewBag.CurrentPage == "/Employee/PerformanceReviews" ? "active" : "")" href="/Employee/PerformanceReviewsFilter">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link-icon">
+                                        <span class="far fa-id-card"></span>
+                                    </span>
+                                    <span class="nav-link-text ps-1">Çalışan Karnesi</span>
                                 </div>
                             </a>
                         </li>

@@ -1,0 +1,58 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] ="Değerlendirme";
+}
+<div class="card mb-1">
+    <div class="card-header">
+        <h4>Değerlendirme</h4>
+    </div>
+    <div class="card-body">
+        <form asp-controller="Evaluation" asp-action="Create" class="col-sm-12 d-flex justify-content-between">
+            <div class="col-sm-2">
+                <input class="form-control" type="text" name="Code" placeholder="Kod" required />
+            </div>
+            <div class="col-sm-7">
+                <input class="form-control" type="text" name="Explanation" placeholder="Açıklama" required />
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-outline-success w-100 h-100">Ekle</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card mb-1">
+    <div class="card-body">
+        <table class="table table-sm fs--2 table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center">Kod</th>
+                    <th class="text-center">Açıklama</th>
+                    <th class="text-center">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Evaluations)
+                {
+                    <tr>
+                        <td class="text-center align-middle">@item.Code</td>
+                        <td class="align-middle">@item.Explanation</td>
+                        <td class="text-center align-middle d-flex justify-content-center">
+                            <form asp-controller="Evaluation" asp-action="Delete" method="post">
+                                <button class="btn btn-sm btn-outline-danger fs--2 me-1" value="@item.Code" name="Code">
+                                    <span class="far fa-trash-alt"></span>
+                                </button>
+                            </form>
+                            <form asp-controller="Evaluation" asp-action="CheckForms" method="get">
+                                <button class="btn btn-sm btn-outline-primary fs--2" value="@item.Code" name="Code">
+                                    <span class="fas fa-arrow-right"></span>
+                                </button>
+                            </form>
+                            
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

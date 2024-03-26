@@ -1,0 +1,84 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@foreach (var ek in Model.EmployeeKpis)
+{
+    @foreach (var item in Model.Employees)
+    {
+        <div class="card mb-1">
+            <div class="card-body">
+                <div class="col-sm-12 d-flex">
+                    <div class="col-sm-3">
+                        <img class="rounded-circle img-thumbnail shadow-sm" src="/img/employee/@(item.TC).jpg" width="200">
+                        <div class="col-sm-12">
+                            <h4 class="mb-1">@item.Name @item.LastName</h4>
+                            <h5 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h5>
+                            <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
+                            <p><span class="badge bg-warning">@ek.StartDate.ToShortDateString() - @ek.EndDate.ToShortDateString()</span></p>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 mb-1">
+                        <table class="table table-sm table-bordered table-striped mb-1">
+                            <thead class="bg-soft-warning">
+                                <tr>
+                                    <td colspan="2">Hedefler</td>
+                                    <td class="text-center"><span class="badge badge-soft-success">Hedeflerin Toplam Oranı</span></td>
+                                    <td class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.KpiId == ek.Id).OrderBy(o => o.Id))
+                                {
+                                    <tr>
+                                        <td class="text-900">
+                                            @Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id ==ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()
+                                        </td>
+                                        <td class="text-700">
+                                            @Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%@(ksc.Ratio)</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge rounded-pill badge-soft-warning pt-2 pointer">@ksc.Point</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <table class="table table-sm table-bordered table-striped">
+                            <thead class="bg-soft-success">
+                                <tr>
+                                    <td colspan="2">Yetkinlikler</td>
+                                    <td class="text-center"><span class="badge badge-soft-warning">Yetkinliklerin Toplam Oranı</span></td>
+                                    <td class="text-center"><span class="badge badge-soft-warning">% 0</span></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var ntff in Model.NeedToFillForms.Where(w => w.TextLevel == 0))
+                                {
+                                    @foreach (var tlvl1 in Model.NeedToFillForms.Where(w => w.TextLevel == 1 && Convert.ToInt32(w.Title)==ntff.DetailId))
+                                    {
+                                        <tr>
+                                            <td class="text-900">
+                                                @ntff.Explanation
+                                            </td>
+                                            <td class="text-700">
+                                                @tlvl1.Explanation
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%0</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge rounded-pill badge-soft-success pt-2 pointer">@Model.NeedToFillForms.Where(w=>Convert.ToInt32(w.LowerTitle)==tlvl1.DetailId).Sum(s=>Convert.ToInt32(s.GivenPoint))</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                    
+                                }                               
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

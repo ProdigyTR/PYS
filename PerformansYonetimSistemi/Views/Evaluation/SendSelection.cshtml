@@ -1,0 +1,113 @@
+﻿@using PerformansYonetimSistemi.Helper;
+@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["Title"] = "Gönderim Seçim Listesi";
+    Functions functions = new Functions();
+}
+<h2>Çalışan Listesi</h2>
+<div class="card col-sm-12 bg-secondary">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div>
+                <button class="btn btn-primary" type="button" onclick="selectAll()">Tüm Çalışanları Seç</button>
+            </div>
+            <div class="d-flex">
+                <form asp-controller="Evaluation" asp-action="sendMail">
+                    <button class="btn btn-outline-warning me-1" type="submit" onmouseover="getManagers();getEmployees()" name="btnAction" value="manager">Amirlere Mail At</button>
+                    <input class="d-none" id="employeesInputm" name="employees" />
+                    <input class="d-none" type="number" name="id" value="@Model.FormMases.Select(s=>s.Id).FirstOrDefault()" />
+                    <input class="d-none" name="Code" value="@Model.Evaluations.Select(s=>s.Code).FirstOrDefault()" />
+                </form>
+                <form asp-controller="Evaluation" asp-action="sendMail">
+                    <button class="btn btn-outline-info" type="submit" onmouseover="getEmployees()" name="btnAction" value="employee">Çalışanlara Mail At</button>
+                    <input class="d-none" id="employeesInput" name="employees" />
+                    <input class="d-none" type="number" name="id" value="@Model.FormMases.Select(s=>s.Id).FirstOrDefault()" />
+                    <input class="d-none" name="Code" value="@Model.Evaluations.Select(s=>s.Code).FirstOrDefault()" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card col-sm-12">
+    <div class="card-body">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center">T.C Kimlik No</th>
+                    <th>Adı Soyadı</th>
+                    <th class="text-center">Görev/Ünvan</th>
+                    <th class="text-center">Departman</th>
+                    <th class="text-center">İşe Giriş Tarihi</th>
+                    <th class="text-center">Kıdem Süresi</th>
+                    <th class="text-center">Mail</th>
+                    <th class="text-center">Toplam İş Tecrübesi (Yıl)</th>
+                    <th class="text-center">Yöneticisi</th>
+                    <th class="text-center">Müdürü</th>
+                    <th class="text-center">Genel Müdür</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Employees.OrderBy(o => o.Name).ThenBy(t => t.LastName))
+                {
+                    // Tarihler arasındaki farkı bul
+                    TimeSpan fark = DateTime.Now - @item.DateOfRecruitment;
+
+                    // Yılları ve ayları hesapla
+                    int yilFarki = (int)(fark.TotalDays / 365.25); // ortalama yıl uzunluğu kullanarak
+                    int ayFarki = (int)((fark.TotalDays % 365.25) / 30.436875); // ortalama ay uzunluğu kullanarak
+                    string kidemSuresi = "";
+                    // Sonucu yazdır
+                    if (yilFarki > 0)
+                    {
+                        kidemSuresi = $"{yilFarki} yıl {ayFarki} ay";
+                    }
+                    else
+                    {
+                        kidemSuresi = $"{ayFarki} ay";
+                    }
+                    <tr>
+                        <td class="white-space-nowrap text-center align-middle">
+                            <input class="form-check-input text-center" type="checkbox" name="cbox" />
+                        </td>
+                        <td class="text-center text-nowrap">@item.TC</td>
+                        <td class="text-center text-nowrap">@item.Name @item.LastName</td>
+                        <td class="text-center text-nowrap">@item.Position</td>
+                        <td class="text-center text-nowrap">@item.Department</td>
+                        <td class="text-center text-nowrap">@item.DateOfRecruitment.ToString("dd.MM.yyyy")</td>
+                        <td class="text-center text-nowrap">@kidemSuresi</td>
+                        <td class="text-center text-nowrap">@item.Mail</td>
+                        <td class="text-center text-nowrap">@(item.TotalWorkExperience == 0 ? "" : item.TotalWorkExperience)</td>
+                        <td class="text-center text-nowrap">@item.Responsible</td>
+                        <td class="text-center text-nowrap">@item.IsManager</td>
+                        <td class="text-center text-nowrap">@item.IsGM</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function selectAll() {
+        var cbox = document.getElementsByName('cbox');
+        for (i = 0; i < cbox.length; i++) {
+            if (cbox[i].checked) {
+                cbox[i].checked = false;
+            } else {
+                cbox[i].checked = true;
+            }
+        }
+    };
+    function getEmployees() {
+        var cbox = document.getElementsByName('cbox');
+        var selectedEmployees = "";
+        for (i = 0; i < cbox.length; i++) {
+            if (cbox[i].checked) {
+                selectedEmployees = selectedEmployees + cbox[i].parentNode.parentNode.children[1].innerHTML + ";" + cbox[i].parentNode.parentNode.children[10].innerHTML + ";" + cbox[i].parentNode.parentNode.children[9].innerHTML + ",";
+            }
+        }
+        selectedEmployees = selectedEmployees.substring(0, selectedEmployees.length - 1);
+        document.getElementById('employeesInput').value = selectedEmployees;
+        document.getElementById('employeesInputm').value = selectedEmployees;
+    };
+</script>

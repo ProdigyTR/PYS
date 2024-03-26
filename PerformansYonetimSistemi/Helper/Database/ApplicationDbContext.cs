@@ -22,6 +22,10 @@ namespace PerformansYonetimSistemi.Helper.Database
         public DbSet<Target> Targets { get; set; }
         public DbSet<PerformanceCard> PerformanceCards { get; set; }
         public DbSet<EmployeeKpi> EmployeeKpis { get; set; }
+        public DbSet<Evaluation> Evaluations { get; set; }
+        public DbSet<EvaluationForm> EvaluationForms { get; set; }
+
+        public DbSet<NeedToFillDepartmentManager> NeedToFillDepartmentManagers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +40,9 @@ namespace PerformansYonetimSistemi.Helper.Database
             modelBuilder.Entity<Target>().ToTable("Target");
             modelBuilder.Entity<PerformanceCard>().ToTable("PerformanceCard");
             modelBuilder.Entity<EmployeeKpi>().ToTable("EmployeeKpi");
+            modelBuilder.Entity<Evaluation>().ToTable("Evaluation");
+            modelBuilder.Entity<EvaluationForm>().ToTable("EvaluationForm");
+            modelBuilder.Entity<NeedToFillDepartmentManager>().ToTable("NeedToFillDepartmentManager");
         }      
     }
 }

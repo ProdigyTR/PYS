@@ -23,5 +23,6 @@ namespace PerformansYonetimSistemi.Models.HR
 
         [Required]
         public int Sequence { get; set; }
+        public int Weight { get; set; }
     }
 }

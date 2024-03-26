@@ -1,0 +1,13 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+<div class="card">
+    <form asp-controller="Employee" asp-action="PerformanceReviews" method="get" class="card-body">
+        <select class="form-select js-choice" name="TC" size="1" data-options='{"removeItemButton":true,"placeholder":true}'>
+            <option value="">Çalışan Seçiniz...</option>
+            @foreach (var item in Model.Employees)
+            {
+                <option value="@item.TC">@item.Name @item.LastName</option>
+            }
+        </select>
+        <button class="btn w-100 btn-outline-success" type="submit">İlerle <span class="fas fa-forward"></span></button>
+    </form>
+</div>

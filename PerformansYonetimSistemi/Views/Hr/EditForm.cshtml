@@ -63,21 +63,21 @@
                         {
                             <tr>
                                 <td>
-                                    <label class="form-label fs--1 fw-bold">@item.Explanation</label>
+                                    <label class="form-label fs--1 fw-bold">@item.Explanation <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@item.Id)">%@(item.Weight)</span></label>
                                 </td>
                             </tr>
                             @foreach (var itemLt in Model.FormDetails.Where(w => w.TextLevel == 1 && w.Title == item.Id.ToString() && !string.IsNullOrEmpty(w.Title)).OrderBy(o => o.Sequence))
                             {
                                 <tr>
                                     <td>
-                                        <label class="form-label fs--2 fw-bold fst-italic"><ul>@itemLt.Explanation</ul></label>
+                                        <label class="form-label fs--2 fw-bold fst-italic"><ul>@itemLt.Explanation <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@itemLt.Id)">%@(itemLt.Weight)</span></ul></label>
                                     </td>
                                 </tr>
                                 @foreach (var itemDt in Model.FormDetails.Where(w => w.TextLevel == 2 && w.LowerTitle == itemLt.Id.ToString() && !string.IsNullOrEmpty(w.LowerTitle)).OrderBy(o => o.Sequence))
                                 {
                                     <tr>
                                         <td>
-                                            <label class="form-label fs--2"><li>@itemDt.Explanation</li></label>
+                                            <label class="form-label fs--2"><li>@itemDt.Explanation <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@itemDt.Id)">%@(itemDt.Weight)</span></li></label>
                                         </td>
                                     </tr>
                                 }
@@ -294,6 +294,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="ratioModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
+        <form asp-asp-controller="Hr" asp-action="UpdateRatio" method="post" class="modal-content position-relative">
+            <div class="modal-body p-0">
+                <div class="p-4 pb-0">
+                    <div class="mb-3">
+                        <label class="col-form-label" for="recipient-name">Ağırlık Oranı Giriniz</label>
+                        <input class="form-control" type="number" value="" name="Ratio" />
+                        <input class="d-none" name="Id" Id="IdRatio" value="" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
     function getBagliBaslik(v) {
         var ustBaslik = document.getElementById('selectUstBaslik');
@@ -319,4 +337,7 @@
             alert('Alt başlık seçiniz..!');
         }
     }
+    function setIdRatio(p) {
+        document.getElementById("IdRatio").value = p;
+    };
 </script>
