@@ -120,6 +120,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             mvm.Targets = await _context.Targets.Where(w => mvm.PerformanceCards.Select(s => s.TargetId).Contains(w.Id)).ToListAsync();
             mvm.KPIs = await _context.KPIs.Where(w => mvm.Targets.Select(s => s.KpiCode).Contains(w.Code)).ToListAsync();
             mvm.NeedToFillForms = await _context.NeedToFillForms.Where(w => w.Employee == TC).ToListAsync();
+            mvm.FormDetails = await _context.FormDetails.Where(w => mvm.NeedToFillForms.Select(s => s.MasId).Contains(w.MasId)).ToListAsync();
             return View(mvm);
         }
     }

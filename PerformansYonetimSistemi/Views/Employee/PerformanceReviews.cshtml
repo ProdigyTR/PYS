@@ -1,4 +1,9 @@
-﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+﻿@using PerformansYonetimSistemi.Helper;
+@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Çalışan Karnesi";
+    Functions functions = new Functions();
+}
 @foreach (var ek in Model.EmployeeKpis)
 {
     @foreach (var item in Model.Employees)
@@ -13,15 +18,17 @@
                             <h5 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h5>
                             <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
                             <p><span class="badge bg-warning">@ek.StartDate.ToShortDateString() - @ek.EndDate.ToShortDateString()</span></p>
+
                         </div>
                     </div>
                     <div class="col-sm-9 mb-1">
                         <table class="table table-sm table-bordered table-striped mb-1">
                             <thead class="bg-soft-warning">
                                 <tr>
-                                    <td colspan="2">Hedefler</td>
-                                    <td class="text-center"><span class="badge badge-soft-success">Hedeflerin Toplam Oranı</span></td>
-                                    <td class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span></td>
+                                    <th colspan="2">Hedefler</th>
+                                    <th class="text-center"><span class="badge badge-soft-success">Hedeflerin Toplam Oranı</span></th>
+                                    <th class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span></th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,28 +54,41 @@
                         <table class="table table-sm table-bordered table-striped">
                             <thead class="bg-soft-success">
                                 <tr>
-                                    <td colspan="2">Yetkinlikler</td>
-                                    <td class="text-center"><span class="badge badge-soft-warning">Yetkinliklerin Toplam Oranı</span></td>
-                                    <td class="text-center"><span class="badge badge-soft-warning">% 0</span></td>
+                                    <th colspan="2">Yetkinlikler</th>
+                                    <th class="text-center"><span class="badge badge-soft-warning">Yetkinliklerin Toplam Oranı</span></th>
+                                    <th class="text-center"><span class="badge badge-soft-warning">%@Model.FormDetails.Where(w=>w.TextLevel==0).Sum(s=>s.Weight)</span></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var ntff in Model.NeedToFillForms.Where(w => w.TextLevel == 0))
                                 {
+                                    <tr>
+                                        <td class="text-900">
+                                            @ntff.Explanation
+                                        </td>
+                                        <td class="text-700">                                            
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge rounded-pill badge-soft-warning pt-2 pointer">%@Model.FormDetails.Where(w=>w.Id==ntff.DetailId).Select(s=>s.Weight).FirstOrDefault()</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span class="badge rounded-pill badge-soft-danger pt-2 pointer">@(functions.CalculatePoint(ntff.DetailId, Model.FormDetails, Model.NeedToFillForms))</span>
+                                        </td>
+                                    </tr>
                                     @foreach (var tlvl1 in Model.NeedToFillForms.Where(w => w.TextLevel == 1 && Convert.ToInt32(w.Title)==ntff.DetailId))
                                     {
                                         <tr>
                                             <td class="text-900">
-                                                @ntff.Explanation
+                                                
                                             </td>
                                             <td class="text-700">
                                                 @tlvl1.Explanation
                                             </td>
                                             <td class="text-center">
-                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%0</span>
+                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%@Model.FormDetails.Where(w=>w.Id==tlvl1.DetailId).Select(s=>s.Weight).FirstOrDefault()</span>
                                             </td>
                                             <td class="text-center">
-                                                <span class="badge rounded-pill badge-soft-success pt-2 pointer">@Model.NeedToFillForms.Where(w=>Convert.ToInt32(w.LowerTitle)==tlvl1.DetailId).Sum(s=>Convert.ToInt32(s.GivenPoint))</span>
+                                                <span class="badge rounded-pill badge-soft-success pt-2 pointer">@(functions.CalculatePoint(tlvl1.DetailId, Model.FormDetails, Model.NeedToFillForms))</span>
                                             </td>
                                         </tr>
                                     }

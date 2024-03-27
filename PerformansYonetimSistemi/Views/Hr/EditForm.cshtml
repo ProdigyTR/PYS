@@ -63,7 +63,7 @@
                         {
                             <tr>
                                 <td>
-                                    <label class="form-label fs--1 fw-bold">@item.Explanation <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@item.Id)">%@(item.Weight)</span></label>
+                                    <label class="form-label fs--1 fw-bold">@item.Explanation <span class="badge rounded-pill badge-soft-success pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@item.Id)">%@(item.Weight)</span></label>
                                 </td>
                             </tr>
                             @foreach (var itemLt in Model.FormDetails.Where(w => w.TextLevel == 1 && w.Title == item.Id.ToString() && !string.IsNullOrEmpty(w.Title)).OrderBy(o => o.Sequence))
@@ -77,7 +77,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            <label class="form-label fs--2"><li>@itemDt.Explanation <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@itemDt.Id)">%@(itemDt.Weight)</span></li></label>
+                                            <label class="form-label fs--2"><li>@itemDt.Explanation <span class="badge rounded-pill badge-soft-warning pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@itemDt.Id)">%@(itemDt.Weight)</span></li></label>
                                         </td>
                                     </tr>
                                 }
