@@ -10,8 +10,11 @@
     }
 </style>
 <div class="card">
-    <div class="card-body" style="height:85vh">
-        <div class="scrollbar" style="height:82vh">
+    <form asp-controller="Employee" asp-action="Create" method="get" class="card-header col-sm-12">
+        <button class="btn btn-sm btn-outline-info w-100">Yeni Çalışan</button>
+    </form>
+    <div class="card-body" style="height:79vh">
+        <div class="scrollbar" style="height:76vh">
             <table class="table table-sm table-bordered table-hover fs--2">
                 <thead class="position-sticky top-0 bg-secondary text-white">
                     <tr>
@@ -24,7 +27,7 @@
                         <th class="text-center">Mail</th>
                         <th class="text-center">Toplam İş Tecrübesi (Yıl)</th>
                         <th class="text-center">Yöneticisi</th>
-                        <th class="text-center">Müdürü</th>
+                        <th class="text-center">Müdür</th>
                         <th class="text-center">Genel Müdür</th>
                         <th class="text-center">Aktif</th>
                     </tr>

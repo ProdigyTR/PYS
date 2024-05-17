@@ -21,7 +21,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             ViewBag.CurrentPage = "/Employee/List";
             mvm = new MainViewModel
             {
-                Employees = await _context.Employees.OrderBy(o => o.Name).ThenBy(t=>t.LastName).ToListAsync(),
+                Employees = await _context.Employees.Where(w=>w.IsActive).OrderBy(o => o.Name).ThenBy(t=>t.LastName).ToListAsync(),
                 Positions = await _context.Positions.Where(w => w.IsActive).OrderBy(o => o.DepartmentCode).ThenBy(t => t.Name).ToListAsync(),
                 Departments = await _context.Departments.Where(w => w.IsActive).OrderBy(t => t.Name).ToListAsync()
             };

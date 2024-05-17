@@ -2,7 +2,7 @@
 @{
     ViewData["title"] = "Çalışan Seçimi - Hedef";
 }
-<form asp-controller="Target" asp-action="List" method="get" class="card">
+<form asp-controller="Target" asp-action="EmployeeTarget" method="get" class="card">
     <div class="card-body">
         <div class="col-sm-12 d-flex justify-content-between">
             <div class="col-sm-8">
@@ -11,6 +11,26 @@
                     @foreach (var item in Model.Employees)
                     {
                         <option value="@item.TC">@item.Name @item.LastName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-sm btn-outline-primary w-100 h-100" type="submit">
+                    İlerle <span class="fas fa-forward"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+<form asp-controller="Target" asp-action="PositionTarget" method="get" class="card">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex justify-content-between">
+            <div class="col-sm-8">
+                <select class="form-select js-choice w-100" name="code" data-options='{"removeItemButton":true,"placeholder":true}'>
+                    <option value="">Pozisyon Seçiniz..</option>
+                    @foreach (var item in Model.Positions.OrderBy(o=>o.Name))
+                    {
+                        <option value="@item.Code">@item.Name</option>
                     }
                 </select>
             </div>
