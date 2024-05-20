@@ -1,0 +1,44 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Filtre - Hedef";
+}
+<form asp-controller="Target" asp-action="Period" method="get" class="card">
+    <div class="card-body">
+        <div class="col-sm-12 mb-3">
+            <select class="form-select" name="DepartmanCode" onchange="filterEmployee(this.value)">
+                <option value="">Departman Seçiniz..</option>
+                @foreach (var item in Model.Departments.OrderBy(o => o.Name))
+                {
+                    <option value="@item.Code">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm-12 mb-3">
+            <select class="form-select" name="TC">
+                <option value="">Çalışan Seçiniz..</option>
+                @foreach (var item in Model.Employees.OrderBy(o => o.Name).ThenBy(t=>t.LastName))
+                {
+                    <option value="@item.TC" name="employeeFilter" department="@item.Department">@item.Name @item.LastName</option>
+                }
+            </select>
+        </div>
+        <div class="col-sm-12">
+            <button class="btn btn-sm btn-outline-primary w-100 h-100" type="submit">
+                İlerle <span class="fas fa-forward"></span>
+            </button>
+        </div>
+    </div>
+</form>
+<script>
+    function filterEmployee(departmentValue) {
+        var employee = document.getElementsByName('employeeFilter');
+
+        for (i = 0; i < employee.length;i++){
+            if (employee[i].getAttribute('department') == departmentValue) {
+                employee[i].classList.remove('d-none');
+            } else {
+                employee[i].classList.add('d-none');
+            }
+        }
+    }
+</script>

@@ -1,0 +1,56 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Dönem - Hedef";
+}
+<form asp-controller="Target" asp-action="CreatePeriod" class="card mb-1">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex">
+            <div class="col-sm-3 me-1">
+                <input class="form-control" type="date" name="StartDate" value="@(DateTime.Now)"/>
+            </div>
+            <div class="col-sm-3 me-1">
+                <input class="form-control" type="date" name="EndDate" value="@(DateTime.Now)" />
+                <input class="d-none" type="text" name="Department" value="@ViewBag.Department" />
+                <input class="d-none" type="text" name="Employee" value="@ViewBag.Employee" />
+            </div>
+            <div class="col-sm-6">
+                <button class="btn btn-outline-success w-100" type="submit">Yeni Dönem Oluştur</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="card mb-1">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex">
+            <table class="table table-bordered">
+                <thead class="bg-soft-warning">
+                    <tr>
+                        <th class="text-center">Başlama Tarihi</th>
+                        <th class="text-center">Bitiş Tarihi</th>
+                        <th class="text-center">Oluşturan</th>
+                        <th class="text-center">Oluşturma Tarihi</th>
+                        <th class="text-center">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TargetPeriods.OrderBy(o=>o.StartDate))
+                    {
+                        <tr>
+                            <td class="text-center">@item.StartDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@item.EndDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@item.CreatedBy</td>
+                            <td class="text-center">@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="text-center">
+                                <form asp-controller="Target" asp-action="EmployeeTarget" method="get">
+                                    <button class="btn btn-sm btn-outline-primary me-2" name="Id" value="@item.Id">
+                                        <span class="fas fa-expand-alt"></span>
+                                    </button>                                    
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

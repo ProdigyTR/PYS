@@ -26,7 +26,7 @@ namespace PerformansYonetimSistemi.Helper.Database
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
 
         public DbSet<NeedToFillDepartmentManager> NeedToFillDepartmentManagers { get; set; }
-
+        public DbSet<TargetPeriod> TargetPeriods { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<IK_User>().ToTable("IK_User");
@@ -43,6 +43,7 @@ namespace PerformansYonetimSistemi.Helper.Database
             modelBuilder.Entity<Evaluation>().ToTable("Evaluation");
             modelBuilder.Entity<EvaluationForm>().ToTable("EvaluationForm");
             modelBuilder.Entity<NeedToFillDepartmentManager>().ToTable("NeedToFillDepartmentManager");
+            modelBuilder.Entity<TargetPeriod>().ToTable("TargetPeriod");
         }      
     }
 }
