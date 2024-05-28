@@ -20,69 +20,69 @@
                         <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
                     </div>
                 </div>
-                @foreach (var ek in Model.EmployeeKpis.Where(w => w.TC == item.TC))
+                @foreach (var tp in Model.TargetPeriods.Where(w => w.Employee == item.TC))
                 {
                     <div class="card col-sm-9">
                         <div class="card-header bg-soft-secondary">
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <span class="badge bg-info">Performans Kartı</span>
-                                    <span class="badge bg-warning">@ek.StartDate.ToShortDateString() - @ek.EndDate.ToShortDateString()</span>
+                                    <span class="badge bg-warning">@tp.StartDate.ToShortDateString() - @tp.EndDate.ToShortDateString()</span>
                                 </div>
                                 <div>
                                     <form asp-controller="KPI" asp-action="UpdatePoint" method="post">
-                                        <button class="btn btn-sm btn-outline-success" type="submit" onmouseover="getPointData('@ek.Id')">Puanları Güncelle</button>
-                                        <input class="d-none" name="pointData" id="pointData@(ek.Id)" />
+                                        <button class="btn btn-sm btn-outline-success" type="submit" onmouseover="getPointData('@tp.Id')">Puanları Güncelle</button>
+                                        <input class="d-none" name="pointData" id="pointData@(tp.Id)" />
                                     </form>
                                 </div>
                                 <div>
                                     <span class="badge badge-soft-primary">Hedeflerin Toplam Oranı</span>
-                                    <span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span>
+                                    <span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.TargetPeriodId==tp.Id).Sum(s=>s.Ratio)</span>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body bg-soft-info">
                             <div class="row justify-content-around">
-                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.KpiId == ek.Id).OrderBy(o => o.Id))
+                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.TargetPeriodId == tp.Id).OrderBy(o => o.Id))
                                 {
                                     string radioChecked = "checked";
                                     int point = ksc.Point;
                                     <div class="card col-sm-12 mb-1">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
-                                                <label>@Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id ==ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()</label>
+                                                <label>@Model.KPIs.Where(w=>w.Code==Model.Targets.Where(w=>w.Id==ksc.TargetId).Select(s=>s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()</label>
                                                 <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@ksc.Id)">%@(ksc.Ratio)</span>
                                             </div>
                                             <label class="form-label form-label-sm fs--2 text-400">@Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()</label>
                                             <div class="col-sm-12 d-flex justify-content-between">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="radioBtn1@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point==1)
+                                                    <input class="form-check-input" id="radioBtn1@(ksc.TargetPeriodId)@(ksc.TargetId)" type="radio" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" @if (point == 1)
                                                     {
                                                         @radioChecked
                                                     }/>
-                                                    <label class="form-check-label fs-1" for="radioBtn1@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-danger">1</span></label>
+                                                    <label class="form-check-label fs-1" for="radioBtn1@(ksc.TargetPeriodId)@(ksc.TargetId)"><span class="badge bg-danger">1</span></label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="radioBtn2@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 2)
+                                                    <input class="form-check-input" id="radioBtn2@(ksc.TargetPeriodId)@(ksc.TargetId)" type="radio" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" @if (point == 2)
                                                     {
                                                         @radioChecked
                                                     }/>
-                                                    <label class="form-check-label fs-1" for="radioBtn2@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-warning">2</span></label>
+                                                    <label class="form-check-label fs-1" for="radioBtn2@(ksc.TargetPeriodId)@(ksc.TargetId)"><span class="badge bg-warning">2</span></label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="radioBtn3@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 3)
+                                                    <input class="form-check-input" id="radioBtn3@(ksc.TargetPeriodId)@(ksc.TargetId)" type="radio" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" @if (point == 3)
                                                     {
                                                         @radioChecked
                                                     }/>
-                                                    <label class="form-check-label fs-1" for="radioBtn3@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-primary">3</span></label>
+                                                    <label class="form-check-label fs-1" for="radioBtn3@(ksc.TargetPeriodId)@(ksc.TargetId)"><span class="badge bg-primary">3</span></label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" id="radioBtn4@(ksc.KpiId)@(ksc.TargetId)" type="radio" name="@(ksc.KpiId+"-"+ksc.TargetId)" @if (point == 4)
+                                                    <input class="form-check-input" id="radioBtn4@(ksc.TargetPeriodId)@(ksc.TargetId)" type="radio" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" @if (point == 4)
                                                     {
                                                          @radioChecked;
                                                     }
                                                     />
-                                                    <label class="form-check-label fs-1" for="radioBtn4@(ksc.KpiId)@(ksc.TargetId)"><span class="badge bg-success">4</span></label>
+                                                    <label class="form-check-label fs-1" for="radioBtn4@(ksc.TargetPeriodId)@(ksc.TargetId)"><span class="badge bg-success">4</span></label>
                                                 </div>
                                             </div>
                                         </div>

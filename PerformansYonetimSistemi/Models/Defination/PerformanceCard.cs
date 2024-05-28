@@ -6,7 +6,7 @@ namespace PerformansYonetimSistemi.Models.Defination
     {
         [Key]
         public int Id { get; set; }
-        public int KpiId { get; set; }
+        public int TargetPeriodId { get; set; }
         public int TargetId { get; set; }
         public int Point { get; set; } = 0;
         public int Status { get; set; } = 0;

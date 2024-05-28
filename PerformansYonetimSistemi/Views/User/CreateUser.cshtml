@@ -1,0 +1,86 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["Title"] = "Kullanıcı Oluştur";
+}
+<div class="card mb-3">
+    <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../public/assets/img/icons/spot-illustrations/corner-4.png);"></div> <!--/.bg-holder-->
+    <div class="card-body position-relative">
+        <div class="row">
+            <div class="col-sm-8">
+                <form asp-action="CreateUser" method="post" class="row g-3 needs-validation" novalidate="">
+                    <div class="col-sm-6">
+                        <label class="form-label" for="validationUserName">Kullanıcı Adı</label>
+                        <input class="form-control" id="validationUserName" type="text" name="userName" required="">
+                        <div class="invalid-feedback">Boş Geçilemez..!</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="validationPassword">Şifre</label>
+                        <input class="form-control" id="validationPassword" type="text" name="password" required="">
+                        <div class="invalid-feedback">Boş Geçilemez..!</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="validationFirstName">İsim</label>
+                        <input class="form-control" id="validationFirstName" type="text" name="firstName" required="">
+                        <div class="invalid-feedback">Boş Geçilemez..!</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="validationLastName">Soyisim</label>
+                        <input class="form-control" id="validationLastName" type="text" name="lastName" required="">
+                        <div class="invalid-feedback">Boş Geçilemez..!</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="validationEmail">e-Mail</label>
+                        <input class="form-control" id="validationEmail" type="email" name="eMail" required="">
+                        <div class="invalid-feedback">Boş Geçilemez..!</div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <button class="btn btn-outline-success" type="submit">Ekle</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-sm-12">
+                <div class="table-responsive scrollbar">
+                    <table class="table table-sm table-striped overflow-hidden">
+                        <thead class="fs--1">
+                            <tr>
+                                <th class="text-center" scope="col">Kullanıcı No</th>
+                                <th scope="col">Kullanıcı Adı</th>
+                                <th scope="col">İsim</th>
+                                <th scope="col">Soyisim</th>
+                                <th scope="col">e-Mail</th>
+                                <th scope="col">Aktif</th>
+                                <th scope="col">Kayıt Tarihi</th>
+                                <th class="text-end" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="fs--1">
+                            @foreach (var item in Model.Users)
+                            {
+                                <form asp-action="DeleteUser" method="post">
+                                <tr class="align-middle btn-reveal-trigger">
+                                    <input class="d-none" name="UserId" value="@item.UserId">
+                                    <td class="text-center text-nowrap">@item.UserId</td>
+                                    <td class="text-nowrap">@item.UserName</td>
+                                    <td class="text-nowrap">@item.FirstName</td>
+                                    <td class="text-nowrap">@item.LastName</td>
+                                    <td class="text-nowrap">@item.EMail</td>                                    
+                                    <td class="text-nowrap">@item.CreateTime.ToLongDateString()</td>
+                                    <td class="text-end text-nowrap">
+                                        <button class="btn" type="submit" name="userId" value="@item.UserId">
+                                            <span class="fa fa-trash-alt text-danger"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </form>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

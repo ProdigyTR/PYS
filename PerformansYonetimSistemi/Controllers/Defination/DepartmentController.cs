@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models.Defination;
@@ -14,6 +15,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context = context;
         }
         MainViewModel mvm;
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -24,6 +26,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Department department)
         {
@@ -37,6 +40,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.SaveChanges();
             return RedirectToAction("List");
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(string Code)
         {

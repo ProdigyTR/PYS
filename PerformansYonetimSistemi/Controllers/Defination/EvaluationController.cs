@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PerformansYonetimSistemi.Helper;
 using PerformansYonetimSistemi.Helper.Database;
@@ -19,6 +20,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         }
         MainViewModel mvm;
         #region Evaluation
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.CurrentPage = "/Evaluation/Create";
@@ -28,6 +30,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Evaluation evaluation)
         {
@@ -41,6 +44,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.SaveChanges();
             return RedirectToAction("Create");
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(string Code)
         {
@@ -48,21 +52,23 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.Remove(evaluation);
             _context.SaveChanges();
             return RedirectToAction("Create");
-        }        
+        }
         #endregion
         #region Send Forms
+        [Authorize]
         public async Task<IActionResult> CheckForms(string Code)
         {
             ViewBag.CurrentPage = "/Evaluation/Create";
             mvm = new MainViewModel
             {
                 FormMases = await _context.FormMas.ToListAsync(),
-                Evaluations = await _context.Evaluations.Where(w=>w.Code==Code).ToListAsync(),
+                Evaluations = await _context.Evaluations.Where(w => w.Code == Code).ToListAsync(),
             };
 
             return View(mvm);
         }
-        public async Task<IActionResult> ShowForm(int id,string Code)
+        [Authorize]
+        public async Task<IActionResult> ShowForm(int id, string Code)
         {
             ViewBag.CurrentPage = "/Evaluation/Create";
             mvm = new MainViewModel
@@ -73,7 +79,8 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
-        public async Task<IActionResult> SendSelection(int id,string Code)
+        [Authorize]
+        public async Task<IActionResult> SendSelection(int id, string Code)
         {
             ViewBag.CurrentPage = "/Evaluation/Create";
             mvm = new MainViewModel
@@ -84,6 +91,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         public void createEvaluationForm(int id, string Code)
         {
             EvaluationForm evaluationForm = new EvaluationForm();
@@ -92,7 +100,8 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.Add(evaluationForm);
             _context.SaveChanges();
         }
-        public void sendMail(int id, string employees, string btnAction,string Code)
+        [Authorize]
+        public void sendMail(int id, string employees, string btnAction, string Code)
         {
             createEvaluationForm(id, Code);
             string html = "";
@@ -228,6 +237,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
 
 
         }
+
         public IActionResult NeedToFillForm(string guid)
         {
             mvm = new MainViewModel
@@ -241,10 +251,11 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             mvm.FormDetails = _context.FormDetails.Where(w => w.MasId == mvm.FormMases.Select(s => s.Id).FirstOrDefault()).ToList();
             if (mvm.NeedToFillForms.Where(w => w.ModifiedAt != null).Any())
             {
-                return RedirectToAction("AlreadyCompleted","Evaluation");
+                return RedirectToAction("AlreadyCompleted", "Evaluation");
             }
             return View(mvm);
         }
+
         [HttpPost]
         public IActionResult UpdateNeedToFillForm(string stringData, string guid, NeedToFillDepartmentManager needToFillDepartmentManager)
         {
@@ -266,7 +277,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
 
                 foreach (var item in givenPoints)
                 {
-                    if(item.Item2.GetType() == typeof(int))
+                    if (item.Item2.GetType() == typeof(int))
                     {
 
                         NeedToFillForm needToFillForm = new NeedToFillForm();
@@ -287,15 +298,17 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             catch (Exception e)
             {
                 ViewBag.errorTitle = "Hata";
-                ViewBag.error=e.Message;
+                ViewBag.error = e.Message;
                 return View("Error");
             }
-            return RedirectToAction("FormCompleted","Evaluation");
+            return RedirectToAction("FormCompleted", "Evaluation");
         }
+
         public IActionResult FormCompleted()
         {
             return View();
         }
+
         public IActionResult AlreadyCompleted()
         {
             return View();

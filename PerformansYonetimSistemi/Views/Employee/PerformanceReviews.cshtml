@@ -4,7 +4,7 @@
     ViewData["title"] = "Çalışan Karnesi";
     Functions functions = new Functions();
 }
-@foreach (var ek in Model.EmployeeKpis)
+@foreach (var ek in Model.TargetPeriods)
 {
     @foreach (var item in Model.Employees)
     {
@@ -18,7 +18,22 @@
                             <h5 class="fs-9 fw-normal">@Model.Positions.Where(w => w.Code == item.Position).Select(s => s.Name).FirstOrDefault()</h5>
                             <p class="text-500">@Model.Departments.Where(w => w.Code == item.Department).Select(s => s.Name).FirstOrDefault()</p>
                             <p><span class="badge bg-warning">@ek.StartDate.ToShortDateString() - @ek.EndDate.ToShortDateString()</span></p>
-
+                            <table class="table table-sm fs--2 table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center fw-bold bg-soft-success">Hedefler (%70)</th>
+                                        <th class="text-center fw-bold bg-soft-warning">Yetkinlikler (%30)</th>
+                                        <th class="text-center fw-bold bg-soft-info">Toplam</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center fw-bold fs--2">@Model.PerformanceCards.Sum(s=>s.Point*s.Ratio).ToString("N0")</td>
+                                        <td class="text-center fw-bold fs--2">@(functions.CalculateTotalPoint(Model.FormDetails, Model.NeedToFillForms).ToString("N0"))</td>
+                                        <td class="text-center fw-bold fs--1">@((functions.CalculateTotalPoint(Model.FormDetails, Model.NeedToFillForms) * 70/100 + Model.PerformanceCards.Sum(s => s.Point * s.Ratio)*30/100).ToString("N0"))</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="col-sm-9 mb-1">
@@ -27,12 +42,11 @@
                                 <tr>
                                     <th colspan="2">Hedefler</th>
                                     <th class="text-center"><span class="badge badge-soft-success">Hedeflerin Toplam Oranı</span></th>
-                                    <th class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.KpiId==ek.Id).Sum(s=>s.Ratio)</span></th>
-
+                                    <th class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.TargetPeriodId==ek.Id).Sum(s=>s.Ratio)</span></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.KpiId == ek.Id).OrderBy(o => o.Id))
+                                @foreach (var ksc in Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).OrderBy(o => o.Id))
                                 {
                                     <tr>
                                         <td class="text-900">

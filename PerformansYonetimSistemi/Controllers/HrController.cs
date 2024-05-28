@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PerformansYonetimSistemi.Helper;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models.HR;
@@ -17,12 +18,14 @@ namespace PerformansYonetimSistemi.Controllers
         }
         MainViewModel mvm;
         #region Modules
+        [Authorize]
         public IActionResult Modules()
         {
             return View();
         }
         #endregion
         #region Form
+        [Authorize]
         public IActionResult Form()
         {
             ViewBag.CurrentPage = "/Hr/Form";
@@ -33,6 +36,7 @@ namespace PerformansYonetimSistemi.Controllers
 
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult CreateForm(FormMas form)
         {
@@ -42,6 +46,7 @@ namespace PerformansYonetimSistemi.Controllers
             _context.SaveChanges();
             return RedirectToAction("Form");
         }
+        [Authorize]
         public IActionResult EditForm(int id)
         {
             ViewBag.CurrentPage = "/Hr/Form";
@@ -52,6 +57,7 @@ namespace PerformansYonetimSistemi.Controllers
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult CreateFormDetail(FormDetail formDetail)
         {
@@ -61,6 +67,7 @@ namespace PerformansYonetimSistemi.Controllers
             _context.SaveChanges();
             return RedirectToAction("EditForm", "Hr", new { id = formDetail.MasId });
         }
+        [Authorize]
         [HttpPost]
         public IActionResult UpdateRatio(int Ratio, int Id)
         {
@@ -72,6 +79,7 @@ namespace PerformansYonetimSistemi.Controllers
         }
         #endregion
         #region Employee
+        [Authorize]
         public IActionResult EmployeeList()
         {
             ViewBag.CurrentPage = "/Hr/EmployeeList";

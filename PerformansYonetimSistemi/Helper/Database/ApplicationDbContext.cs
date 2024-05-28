@@ -24,11 +24,13 @@ namespace PerformansYonetimSistemi.Helper.Database
         public DbSet<EmployeeKpi> EmployeeKpis { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
+        public DbSet<Users> Users { get; set; }
 
         public DbSet<NeedToFillDepartmentManager> NeedToFillDepartmentManagers { get; set; }
         public DbSet<TargetPeriod> TargetPeriods { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Users>().ToTable("Users");
             modelBuilder.Entity<IK_User>().ToTable("IK_User");
             modelBuilder.Entity<FormMas>().ToTable("FormMas");
             modelBuilder.Entity<FormDetail>().ToTable("FormDetail");

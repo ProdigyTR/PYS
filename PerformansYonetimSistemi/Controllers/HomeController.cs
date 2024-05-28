@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models;
 using PerformansYonetimSistemi.ViewModels;
@@ -20,18 +21,18 @@ namespace PerformansYonetimSistemi.Controllers
         //{
         //    _logger = logger;
         //}
-
+        [Authorize]
         public IActionResult Index()
         {
             ViewBag.CurrentPage = "/Home/Index";
             return View();
         }
-        
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
         }
-
+        [Authorize]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

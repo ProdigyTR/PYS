@@ -2,7 +2,7 @@
 @{
     ViewData["title"] = "Hedef Belirleme";
 }
-<form asp-controller="Target" asp-action="Create" class="card mb-1" method="post">
+<form asp-controller="Target" asp-action="Create" method="post" class="card mb-1">
     <div class="card-body">
         <div class="col-sm-12">
             @foreach (var item in Model.Employees)
@@ -24,10 +24,15 @@
                 <div class="col-sm-12 mb-1">
                     <select class="form-select form-select-sm fs--2" name="KpiCode">
                         <option value="" selected>KPI Seçiniz...</option>
+                        @foreach (var item in Model.KPIs.OrderBy(o=>o.Name))
+                        {
+                            <option value="@item.Code">@item.Name</option>
+                        }
                     </select>
                 </div>
                 <div class="col-sm-12">
                     <input placeholder="Hedef Açıklama" type="text" class="form-control form-control-sm fs--2" name="Explanation" required="">
+                    <input class="d-none" type="number" name="TargetPeriodId" value="@Model.TargetPeriods.Select(s=>s.Id).FirstOrDefault()">
                 </div>
             </div>
             <div class="col-sm-2">
@@ -53,7 +58,7 @@
                     <td class="align-middle text-wrap">@item.Explanation</td>
                     <td class="text-center align-middle">
                         <form asp-controller="Target" asp-action="Delete" method="post">
-                            <button class="btn btn-sm btn-outline-danger fs--2" name="Id" type="submit">
+                            <button class="btn btn-sm btn-outline-danger fs--2" name="Id" value="@item.Id" type="submit">
                                 <span class="far fa-trash-alt"></span>
                             </button>
                         </form>

@@ -186,14 +186,14 @@
                                     <span class="nav-link-text ps-1">Hedef</span>
                                 </div>
                             </a>
-                            <a class="nav-link @(ViewBag.CurrentPage == "/KPI/Card" ? "active" : "")" href="/KPI/Card">
+                           @*  <a class="nav-link @(ViewBag.CurrentPage == "/KPI/Card" ? "active" : "")" href="/KPI/Card">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
                                         <span class="far fa-chart-bar"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Performans Kartı</span>
                                 </div>
-                            </a>
+                            </a> *@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Hr/Form" ? "active" : "")" href="/Hr/Form">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
@@ -215,8 +215,8 @@
                                 <div class="col ps-0">
                                     <hr class="mb-0 navbar-vertical-divider">
                                 </div>
-                            </div>                            
-                            <a class="nav-link @(ViewBag.CurrentPage == "/KPI/ScoreCard" ? "active" : "")" href="/KPI/ScoreCard">
+                            </div>
+                            <a class="nav-link @(ViewBag.CurrentPage == "/KPI/PerformanceCardFilter" ? "active" : "")" href="/KPI/PerformanceCardFilter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
                                         <span class="far fa-id-card"></span>
@@ -275,7 +275,7 @@
                                 <label class="dropdown-item"><b><h5>@ViewBag.user</h5></b></label>
                                 <label class="dropdown-item">@ViewBag.department</label>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/Home/LogOut">Oturumu Kapat</a>
+                                <a class="dropdown-item" href="/Login/LogOut">Oturumu Kapat</a>
                             </div>
                         </div>
                     </li>

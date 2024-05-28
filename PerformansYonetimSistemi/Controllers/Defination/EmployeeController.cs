@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models.Defination;
@@ -15,6 +16,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context = context;
         }
         MainViewModel mvm;
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> List()
         {
@@ -27,6 +29,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GoTo(string TC, string act)
         {
@@ -50,6 +53,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
 
             return RedirectToAction("List");
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -61,6 +65,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Employee employee)
         {
@@ -74,6 +79,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.SaveChanges();
             return RedirectToAction("List");
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(string TC)
         {
@@ -85,6 +91,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(string TC)
         {
@@ -93,7 +100,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.SaveChanges();
             return RedirectToAction("List");
         }
-        
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> PerformanceReviewsFilter()
         {
@@ -104,6 +111,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             return View(mvm);
         }
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> PerformanceReviews(string TC)
         {
@@ -115,8 +123,8 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             };
             mvm.Positions = await _context.Positions.Where(w => w.IsActive && mvm.Employees.Select(s => s.Position).Contains(w.Code)).ToListAsync();
             mvm.Departments = await _context.Departments.Where(w => w.IsActive && mvm.Employees.Select(s => s.Department).Contains(w.Code)).ToListAsync();
-            mvm.EmployeeKpis = await _context.EmployeeKpis.Where(w=>w.TC==TC).ToListAsync();
-            mvm.PerformanceCards = await _context.PerformanceCards.Where(w=>mvm.EmployeeKpis.Select(s=>s.Id).Contains(w.KpiId)).ToListAsync();
+            mvm.TargetPeriods = await _context.TargetPeriods.Where(w=>w.Employee==TC).ToListAsync();
+            mvm.PerformanceCards = await _context.PerformanceCards.Where(w=>mvm.TargetPeriods.Select(s=>s.Id).Contains(w.TargetPeriodId)).ToListAsync();
             mvm.Targets = await _context.Targets.Where(w => mvm.PerformanceCards.Select(s => s.TargetId).Contains(w.Id)).ToListAsync();
             mvm.KPIs = await _context.KPIs.Where(w => mvm.Targets.Select(s => s.KpiCode).Contains(w.Code)).ToListAsync();
             mvm.NeedToFillForms = await _context.NeedToFillForms.Where(w => w.Employee == TC).ToListAsync();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PerformansYonetimSistemi.Helper.Database;
 using PerformansYonetimSistemi.Models.Defination;
@@ -15,6 +16,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         }
         MainViewModel mvm;
         #region Select Department&Employee
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Filter()
         {
@@ -29,6 +31,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         }
         #endregion
         #region Create || Select Period
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Period(string DepartmanCode,string TC)
         {
@@ -41,6 +44,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             ViewBag.Employee = TC;
             return View(mvm);
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreatePeriod(TargetPeriod targetPeriod)
         {
@@ -66,6 +70,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             }
         }
         #endregion
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> EmployeeTarget(int Id)
         {
@@ -101,22 +106,32 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         //    mvm.Departments = await _context.Departments.Where(w => w.IsActive && w.Code == mvm.Employees.Select(s => s.Department).FirstOrDefault()).ToListAsync();
         //    return View(mvm);
         //}
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Target target)
         {
             target.CreatedBy = "mert.bagbasi";
             _context.Add(target);
             _context.SaveChanges();
-            return RedirectToAction("EmployeeTarget", new {TC=target.Employee});
+
+            int lastRecord = _context.Targets.OrderByDescending(o => o.Id).Select(s => s.Id).FirstOrDefault();
+            PerformanceCard performanceCard = new PerformanceCard();
+            performanceCard.TargetPeriodId=target.TargetPeriodId;
+            performanceCard.TargetId = lastRecord;
+            _context.Add(performanceCard);
+            _context.SaveChanges();
+            return RedirectToAction("EmployeeTarget", new { Id = target.TargetPeriodId});
         }
+        [Authorize]
         [HttpPost]
         public IActionResult Delete(int Id)
         {
             Target target = _context.Targets.FirstOrDefault(w => w.Id == Id);
+            int targetPeriodId = target.TargetPeriodId;
             string TC = target.Employee;
             _context.Remove(target);
             _context.SaveChanges();
-            return RedirectToAction("EmployeeTarget", new { TC = TC });
+            return RedirectToAction("EmployeeTarget", new { Id = targetPeriodId });
         }
     }
 }

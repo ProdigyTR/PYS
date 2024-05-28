@@ -20,5 +20,6 @@ namespace PerformansYonetimSistemi.ViewModels
         public List<Evaluation> Evaluations { get; set; }
         public List<EvaluationForm> EvaluationForms { get; set; }
         public List<TargetPeriod> TargetPeriods { get; set; }
+        public List<Users> Users { get; set; }
     }
 }
