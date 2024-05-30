@@ -75,21 +75,33 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         public async Task<IActionResult> EmployeeTarget(int Id)
         {
             ViewBag.CurrentPage = "/Target/Filter";
-            
+
+            var targetPeriods = await _context.TargetPeriods.Where(w => w.Id == Id).ToListAsync();
+
+            string TC = targetPeriods.Select(s => s.Employee).FirstOrDefault();
+            var employees = await _context.Employees.Where(w => w.TC == TC).ToListAsync();
+
+            string position = employees.Select(s => s.Position).FirstOrDefault();
+            string department = employees.Select(s => s.Department).FirstOrDefault();
+
+            var positions = await _context.Positions.Where(w => w.IsActive && w.Code == position).ToListAsync();
+            var departments = await _context.Departments.Where(w => w.IsActive && w.Code == department).ToListAsync();
+            var kpis = await _context.KPIs.Where(w => w.Departmant == department).ToListAsync();
+            var targets = await _context.Targets.Where(w => w.Employee == TC && w.TargetPeriodId == Id).ToListAsync();
+            var departmentEmployees = await _context.Employees.Where(w => w.Department == department).OrderBy(o => o.Name).ThenBy(t=>t.LastName).ToListAsync();
+
             mvm = new MainViewModel
-            {            
-                TargetPeriods = await _context.TargetPeriods.Where(w=>w.Id==Id).ToListAsync()
+            {
+                TargetPeriods = targetPeriods,
+                Employees = employees,
+                Positions = positions,
+                Departments = departments,
+                KPIs = kpis,
+                Targets = targets
             };
-            string TC = mvm.TargetPeriods.Select(s => s.Employee).FirstOrDefault();
-            mvm.Employees = await _context.Employees.Where(w=>w.TC==TC).ToListAsync();
-            
-            string position = mvm.Employees.Select(s => s.Position).FirstOrDefault();
-            string department = mvm.Employees.Select(s => s.Department).FirstOrDefault();
-            
-            mvm.Positions=await _context.Positions.Where(w=>w.IsActive && w.Code== position).ToListAsync();
-            mvm.Departments = await _context.Departments.Where(w => w.IsActive && w.Code == mvm.Employees.Select(s => s.Department).FirstOrDefault()).ToListAsync();
-            mvm.KPIs = await _context.KPIs.Where(w=>w.Departmant==department).ToListAsync();
-            mvm.Targets = await _context.Targets.Where(w => w.Employee == TC && w.TargetPeriodId==Id).ToListAsync();
+
+            ViewBag.employees = departmentEmployees;
+
             return View(mvm);
         }
         //[HttpGet]
@@ -132,6 +144,46 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.Remove(target);
             _context.SaveChanges();
             return RedirectToAction("EmployeeTarget", new { Id = targetPeriodId });
+        }
+        [Authorize]
+        [HttpPost]
+        public IActionResult CopyTarget(string employee,int targetPeriodId)
+        {
+            var targetSelected = _context.Targets.Where(f => f.TargetPeriodId == targetPeriodId).ToList();
+
+            var targetPeriodSelected = _context.TargetPeriods.FirstOrDefault(f => f.Id == targetPeriodId);
+
+            TargetPeriod targetPeriod = new TargetPeriod();
+            
+            targetPeriod.Employee = employee;
+            targetPeriod.Department=targetPeriodSelected.Department;
+            targetPeriod.StartDate= targetPeriodSelected.StartDate; 
+            targetPeriod.EndDate= targetPeriodSelected.EndDate;
+            targetPeriod.CreatedAt=DateTime.Now;
+            targetPeriod.CreatedBy = User.Identity.Name;
+            
+
+            _context.Add(targetPeriod);
+            _context.SaveChanges();
+
+            int tarperId = _context.TargetPeriods.Max(m => m.Id);
+            
+            foreach (var item in targetSelected)
+            {
+                Target target = new Target();
+                target.TargetPeriodId = tarperId;    
+                target.Employee = employee;
+                target.KpiCode= item.KpiCode;
+                target.Explanation= item.Explanation;
+                target.IsActive= item.IsActive;
+                target.CreatedAt=DateTime.Now;
+                target.CreatedBy = User.Identity.Name;
+
+                _context.Add(target);
+                _context.SaveChanges();
+            }
+            
+            return RedirectToAction("EmployeeTarget", "Target", new { Id = tarperId });
         }
     }
 }

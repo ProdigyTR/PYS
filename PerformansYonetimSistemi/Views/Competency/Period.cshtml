@@ -1,0 +1,41 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["title"] = "Dönem - Yetkinlik";
+}
+<div class="card mb-1">
+    <div class="card-body">
+        <div class="col-sm-12 d-flex">
+            <table class="table table-bordered">
+                <thead class="bg-soft-warning">
+                    <tr>
+                        <th class="text-center">Başlama Tarihi</th>
+                        <th class="text-center">Bitiş Tarihi</th>
+                        <th class="text-center">Oluşturan</th>
+                        <th class="text-center">Oluşturma Tarihi</th>
+                        <th class="text-center">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TargetPeriods.OrderBy(o => o.StartDate))
+                    {
+                        <tr>
+                            <td class="text-center">@item.StartDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@item.EndDate.ToString("dd.MM.yyyy")</td>
+                            <td class="text-center">@item.CreatedBy</td>
+                            <td class="text-center">@item.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td class="text-center">
+                                <form asp-controller="Competency" asp-action="ShowCompetency" method="get">
+                                    <button class="btn btn-sm btn-outline-primary me-2" name="TargetPeriodId" value="@item.Id">
+                                        <span class="fas fa-expand-alt"></span>
+                                    </button>
+                                    <input class="d-none" name="CompetencyId" value="@ViewBag.CompetencyId" />
+                                    <input class="d-none" name="TC" value="@ViewBag.Employee" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

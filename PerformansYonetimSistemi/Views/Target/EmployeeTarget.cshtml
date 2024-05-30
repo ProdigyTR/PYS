@@ -9,7 +9,10 @@
             {
                 <div class="d-flex justify-content-between">
                     <img class="rounded-circle img-thumbnail shadow-sm" src="/img/employee/@(item.TC).jpg" width="200">
-                    <h4 class="text-primary"><span class="text-warning">Dönem :</span> @Model.TargetPeriods.Select(s=>s.StartDate.ToString("dd.MM.yyyy")+" - "+s.EndDate.ToString("dd.MM.yyyy")).FirstOrDefault()</h4>
+                    <div>
+                        <h4 class="text-primary"><span class="text-warning">Dönem :</span> @Model.TargetPeriods.Select(s=>s.StartDate.ToString("dd.MM.yyyy")+" - "+s.EndDate.ToString("dd.MM.yyyy")).FirstOrDefault()</h4>
+                        <button class="btn btn-sm btn-outline-info w-100" type="button" data-bs-toggle="modal" data-bs-target="#copyTarget">Hedefleri Kopyala</button>
+                    </div>
                 </div>
                 <div class="col-sm-12">
                     <h4 class="mb-1">@item.Name @item.LastName</h4>
@@ -24,7 +27,7 @@
                 <div class="col-sm-12 mb-1">
                     <select class="form-select form-select-sm fs--2" name="KpiCode">
                         <option value="" selected>KPI Seçiniz...</option>
-                        @foreach (var item in Model.KPIs.OrderBy(o=>o.Name))
+                        @foreach (var item in Model.KPIs.OrderBy(o => o.Name))
                         {
                             <option value="@item.Code">@item.Name</option>
                         }
@@ -67,4 +70,28 @@
             }
         </tbody>
     </table>
+</div>
+
+<div class="modal fade" id="copyTarget" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px">
+        <form asp-controller="Target" asp-action="CopyTarget" method="post" class="modal-content position-relative">
+            <div class="modal-body p-0">
+                <div class="p-4 pb-0">
+                    <div class="mb-3">
+                        <label class="col-form-label" for="recipient-name">Çalışan</label>                        
+                        <select class="form-select" name="employee">
+                            <option value="" selected></option>
+                            @foreach (var item in ViewBag.employees)
+                            {
+                                <option value="@item.TC">@item.Name @item.LastName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-success" type="submit" name="targetPeriodId" value="@Model.TargetPeriods.Select(s=>s.Id).FirstOrDefault()">İlerle</button>
+            </div>
+        </form>
+    </div>
 </div>

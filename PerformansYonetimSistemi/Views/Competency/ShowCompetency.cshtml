@@ -1,0 +1,141 @@
+﻿@model PerformansYonetimSistemi.ViewModels.MainViewModel
+@{
+    ViewData["Title"] = "Yetkinlikler";
+}
+<div class="card">
+    <div class="card-body">
+        <form asp-controller="Competency" asp-action="CreateAndSave" method="post" class="col-sm-12 text-end">
+            <button class="btn btn-primary" type="submit" onmouseover="getDate()">Kaydet</button>
+            <input class="d-none" type="text" id="stringData" name="stringData" />
+            <input class="d-none" type="text" name="targetPeriodId" value="@ViewBag.TargetPeriodId" />
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body" style="background-color:#e9ecef">
+        <div class="col-sm-12 text-end">
+            <h6>@DateTime.Now.ToString("dd.MM.yyyy")</h6>
+        </div>
+        <div class="col-sm-12 text-center">
+            <label class="form-label fw-bold">@Model.FormMases.Select(s => s.Name).FirstOrDefault()</label>
+        </div>
+        <hr />
+        @foreach (var item in Model.Employees)
+        {
+            // Tarihler arasındaki farkı bul
+            TimeSpan fark = DateTime.Now - @item.DateOfRecruitment;
+            // Yılları ve ayları hesapla
+            int yilFarki = (int)(fark.TotalDays / 365.25); // ortalama yıl uzunluğu kullanarak
+            int ayFarki = (int)((fark.TotalDays % 365.25) / 30.436875); // ortalama ay uzunluğu kullanarak
+            string kidemSuresi = "";
+            // Sonucu yazdır
+            if (yilFarki > 0)
+            {
+                kidemSuresi = $"{yilFarki} yıl {ayFarki} ay";
+            }
+            else
+            {
+                kidemSuresi = $"{ayFarki} ay";
+            }
+            <table class="fw-bold mb-3" style="margin-left:auto;margin-right:auto;">
+                <tbody>
+                    <tr>
+                        <td>Adı Soyadı</td>
+                        <td>:</td>
+                        <td>@item.Name @item.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Bölüm</td>
+                        <td>:</td>
+                        <td>@Model.Departments.Where(w=>w.Code==item.Department).Select(s=>s.Name).FirstOrDefault()</td>
+                    </tr>
+                    <tr>
+                        <td>Görevi/Ünvanı</td>
+                        <td>:</td>
+                        <td>@Model.Positions.Where(w=>w.Code==item.Position).Select(s=>s.Name).FirstOrDefault()</td>
+                    </tr>
+                    <tr>
+                        <td>İşe Giriş Tarihi</td>
+                        <td>:</td>
+                        <td>@item.DateOfRecruitment.ToString("dd.MM.yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>Kıdem Süresi</td>
+                        <td>:</td>
+                        <td>@kidemSuresi</td>
+                    </tr>
+                    <tr>
+                        <td>Toplam İş Tecrübesi</td>
+                        <td>:</td>
+                        <td>@(item.TotalWorkExperience == 0 ? "" : item.TotalWorkExperience)</td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+
+        <table class ="table table-bordered">
+            <tbody>
+                @foreach (var item in Model.FormDetails.Where(w => w.TextLevel == 0).OrderBy(o => o.Sequence))
+                {
+                    <tr>
+                        <td>
+                            <label class="form-label fw-bold text-primary">@item.Explanation</label>
+                        </td>
+                    </tr>
+                    @foreach (var itemLt in Model.FormDetails.Where(w => w.TextLevel == 1 && w.Title == item.Id.ToString() && !string.IsNullOrEmpty(w.Title)).OrderBy(o => o.Sequence))
+                    {
+                        <tr>
+                            <td>
+                                <label><ul class="form-label fs--2 fw-bold fst-italic align-middle text-info">@itemLt.Explanation :</ul></label>
+                            </td>
+                        </tr>
+                        @foreach (var itemDt in Model.FormDetails.Where(w => w.TextLevel == 2 && w.LowerTitle == itemLt.Id.ToString() && !string.IsNullOrEmpty(w.LowerTitle)).OrderBy(o => o.Sequence))
+                        {
+                            <tr class="fw-bold">
+                                <td>
+                                    <label class="form-label fs--2"><li>@itemDt.Explanation</li></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="d-flex justify-content-between">
+                                    <div class="text-center">
+                                        <span>[1 - ÇOK ZAYIF]</span><br />
+                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="1" required />
+                                    </div>
+                                    <div class="text-center">
+                                        <span>[2 - ZAYIF]</span><br />
+                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="2" required />
+                                    </div>
+                                    <div class="text-center">
+                                        <span>[3 - ORTA]</span><br />
+                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="3" required />
+                                    </div>
+                                    <div class="text-center">
+                                        <span>[4 - İYİ]</span><br />
+                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="4" required />
+                                    </div>
+                                    <div class="text-center">
+                                        <span>[5- ÇOK İYİ]</span><br />
+                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="5" required />
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function getDate() {
+        var jsonData = "";
+        var rb = document.getElementsByClassName('form-check-input');
+        for (i = 0; i < rb.length; i++) {
+            if (rb[i].checked) {
+                jsonData = jsonData + rb[i].name + '-' + rb[i].value + ',';
+            }
+        }
+        document.getElementById('stringData').value = jsonData.substring(0, jsonData.length - 1);
+    };
+</script>

@@ -127,8 +127,8 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             mvm.PerformanceCards = await _context.PerformanceCards.Where(w=>mvm.TargetPeriods.Select(s=>s.Id).Contains(w.TargetPeriodId)).ToListAsync();
             mvm.Targets = await _context.Targets.Where(w => mvm.PerformanceCards.Select(s => s.TargetId).Contains(w.Id)).ToListAsync();
             mvm.KPIs = await _context.KPIs.Where(w => mvm.Targets.Select(s => s.KpiCode).Contains(w.Code)).ToListAsync();
-            mvm.NeedToFillForms = await _context.NeedToFillForms.Where(w => w.Employee == TC).ToListAsync();
-            mvm.FormDetails = await _context.FormDetails.Where(w => mvm.NeedToFillForms.Select(s => s.MasId).Contains(w.MasId)).ToListAsync();
+            mvm.Competencys = await _context.Competencys.Where(w => w.Employee == TC).ToListAsync();
+            mvm.FormDetails = await _context.FormDetails.Where(w => mvm.Competencys.Select(s => s.MasId).Contains(w.MasId)).ToListAsync();
             return View(mvm);
         }
     }

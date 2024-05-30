@@ -16,6 +16,18 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Software\PerformansYonetimSistemi\PerformansYonetimSistemi
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Competency/Filter.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGV0ZW5jeVxGaWx0ZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Competency/Period.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGV0ZW5jeVxQZXJpb2QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Competency/ShowCompetency.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tcGV0ZW5jeVxTaG93Q29tcGV0ZW5jeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Software/PerformansYonetimSistemi/PerformansYonetimSistemi/Views/Department/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVwYXJ0bWVudFxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

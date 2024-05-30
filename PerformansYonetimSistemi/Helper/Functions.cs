@@ -35,17 +35,17 @@ namespace PerformansYonetimSistemi.Helper
 
             return string.Join(",", result);
         }
-        public double CalculateTotalPoint(List<FormDetail> formDetail, List<NeedToFillForm> needToFillForm)
+        public double CalculateTotalPoint(List<FormDetail> formDetail, List<Competency> competencys)
         {
             double result = 0;
             double dblTxtLvl0 = 0;
-            foreach (var txtLvl0 in needToFillForm.Where(w => w.TextLevel == 0).OrderBy(o => o.DetailId))
+            foreach (var txtLvl0 in competencys.Where(w => w.TextLevel == 0).OrderBy(o => o.DetailId))
             {
                 double dblTxtLvl1 = 0;
-                foreach (var txtLvl1 in needToFillForm.Where(w => w.TextLevel == 1 && w.Title == txtLvl0.DetailId.ToString()).OrderBy(o => o.DetailId))
+                foreach (var txtLvl1 in competencys.Where(w => w.TextLevel == 1 && w.Title == txtLvl0.DetailId.ToString()).OrderBy(o => o.DetailId))
                 {
                     double dblTxtLvl2 = 0;
-                    foreach (var txtLvl2 in needToFillForm.Where(w => w.TextLevel == 2 && w.LowerTitle == txtLvl1.DetailId.ToString()).OrderBy(o => o.DetailId))
+                    foreach (var txtLvl2 in competencys.Where(w => w.TextLevel == 2 && w.LowerTitle == txtLvl1.DetailId.ToString()).OrderBy(o => o.DetailId))
                     {
                         dblTxtLvl2 = dblTxtLvl2 + Convert.ToInt32(txtLvl2.GivenPoint) * formDetail.Where(w => w.Id == txtLvl2.DetailId).Select(s => s.Weight).FirstOrDefault() / 100.00;
                     }
@@ -56,7 +56,7 @@ namespace PerformansYonetimSistemi.Helper
             result = dblTxtLvl0;
             return result;
         }
-        public double CalculatePoint(int Id, List<FormDetail> formDetail, List<NeedToFillForm> needToFillForm)
+        public double CalculatePoint(int Id, List<FormDetail> formDetail, List<Competency> competencys)
         {
             double result = 0;
 
@@ -67,7 +67,7 @@ namespace PerformansYonetimSistemi.Helper
 
             if (textLvl == 1)
             {
-                foreach (var item in needToFillForm.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == Id).Select(s => s.Id).Contains(w.DetailId)))
+                foreach (var item in competencys.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == Id).Select(s => s.Id).Contains(w.DetailId)))
                 {
                     decTextLvl1 += Convert.ToDouble(item.GivenPoint) * formDetail.Where(w => w.Id == item.DetailId).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0;
                 }
@@ -76,9 +76,9 @@ namespace PerformansYonetimSistemi.Helper
             }
             else if (textLvl == 0)
             {
-                foreach (var item in needToFillForm.Where(w => formDetail.Where(w => Convert.ToInt32(w.Title) == Id).Select(s => s.Id).Contains(Convert.ToInt32(w.DetailId))))
+                foreach (var item in competencys.Where(w => formDetail.Where(w => Convert.ToInt32(w.Title) == Id).Select(s => s.Id).Contains(Convert.ToInt32(w.DetailId))))
                 {
-                    foreach (var item2 in needToFillForm.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == item.DetailId).Select(s => s.Id).Contains(w.DetailId)))
+                    foreach (var item2 in competencys.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == item.DetailId).Select(s => s.Id).Contains(w.DetailId)))
                     {
                         decTextLvl0 += Convert.ToDouble(item2.GivenPoint) * formDetail.Where(w => w.Id == item2.DetailId).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0;
                     }

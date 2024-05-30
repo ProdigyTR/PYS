@@ -25,6 +25,7 @@ namespace PerformansYonetimSistemi.Helper.Database
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
         public DbSet<Users> Users { get; set; }
+        public DbSet<Competency> Competencys { get; set; }
 
         public DbSet<NeedToFillDepartmentManager> NeedToFillDepartmentManagers { get; set; }
         public DbSet<TargetPeriod> TargetPeriods { get; set; }
@@ -46,6 +47,7 @@ namespace PerformansYonetimSistemi.Helper.Database
             modelBuilder.Entity<EvaluationForm>().ToTable("EvaluationForm");
             modelBuilder.Entity<NeedToFillDepartmentManager>().ToTable("NeedToFillDepartmentManager");
             modelBuilder.Entity<TargetPeriod>().ToTable("TargetPeriod");
+            modelBuilder.Entity<Competency>().ToTable("Competency");
         }      
     }
 }
