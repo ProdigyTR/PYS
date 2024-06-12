@@ -167,7 +167,8 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             _context.SaveChanges();
 
             int tarperId = _context.TargetPeriods.Max(m => m.Id);
-            
+            int targetLastId = 0;
+
             foreach (var item in targetSelected)
             {
                 Target target = new Target();
@@ -181,8 +182,21 @@ namespace PerformansYonetimSistemi.Controllers.Defination
 
                 _context.Add(target);
                 _context.SaveChanges();
+
+                PerformanceCard performanceCard = new PerformanceCard();
+                performanceCard.TargetPeriodId = tarperId;
+                performanceCard.TargetId = _context.Targets.Max(m => m.Id);
+                performanceCard.Point = 0;
+                performanceCard.Status = 0;
+                performanceCard.Ratio = 0;
+                performanceCard.CreatedAt = DateTime.Now;
+                performanceCard.CreatedBy = User.Identity.Name;
+
+                _context.Add(performanceCard);
+                _context.SaveChanges();
             }
-            
+
+
             return RedirectToAction("EmployeeTarget", "Target", new { Id = tarperId });
         }
     }
