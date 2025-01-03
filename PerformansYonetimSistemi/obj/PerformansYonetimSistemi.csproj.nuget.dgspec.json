@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj": {}
+    "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj": {}
   },
   "projects": {
-    "C:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj": {
+    "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
+        "projectUniqueName": "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
         "projectName": "PerformansYonetimSistemi",
-        "projectPath": "C:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
-        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "C:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\obj\\",
+        "projectPath": "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
+        "packagesPath": "C:\\Users\\Mert\\.nuget\\packages\\",
+        "outputPath": "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mert\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,7 +39,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -86,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
