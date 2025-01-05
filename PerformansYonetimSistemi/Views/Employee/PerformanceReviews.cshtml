@@ -28,9 +28,9 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center fw-bold fs--2">@Model.PerformanceCards.Sum(s=>s.Point*s.Ratio).ToString("N0")</td>
+                                        <td class="text-center fw-bold fs--2">@Model.PerformanceCards.Where(w=>w.TargetPeriodId==ek.Id).Sum(s=>s.Point*s.Ratio).ToString("N0")</td>
                                         <td class="text-center fw-bold fs--2">@(functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys).ToString("N0"))</td>
-                                        <td class="text-center fw-bold fs--1">@((functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys) * 70 / 100 + Model.PerformanceCards.Sum(s => s.Point * s.Ratio) * 30 / 100).ToString("N0"))</td>
+                                        <td class="text-center fw-bold fs--1">@((functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys) * 30 / 100 + Model.PerformanceCards.Sum(s => s.Point * s.Ratio) * 70 / 100).ToString("N0"))</td>
                                     </tr>
                                 </tbody>
                             </table>

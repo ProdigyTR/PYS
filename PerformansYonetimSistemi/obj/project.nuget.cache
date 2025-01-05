@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YmRyaA+SRYE=",
+  "dgSpecHash": "Kj2VyVkM8ESC7T2ORl/1y2WMF/0ckRjR8sNk80uuWHzKlD+vkz4AbFIJiuKRuymXmDzpOkmMkj/bRgENqFCi6g==",
   "success": true,
-  "projectFilePath": "D:\\Software\\PerformansYonetimSistemi\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
+  "projectFilePath": "D:\\Software\\PYS\\PerformansYonetimSistemi\\PerformansYonetimSistemi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Mert\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Mert\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
