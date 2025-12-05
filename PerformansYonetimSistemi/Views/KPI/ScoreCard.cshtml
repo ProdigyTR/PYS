@@ -4,7 +4,7 @@
 }
 <style>
     .pointer {
-        cursor: pointer;
+    cursor: pointer;
     }
 </style>
 @foreach (var item in Model.Employees)
@@ -45,8 +45,11 @@
                             <div class="row justify-content-around">
                                 @foreach (var ksc in Model.PerformanceCards.Where(w => w.TargetPeriodId == tp.Id).OrderBy(o => o.Id))
                                 {
-                                    string radioChecked = "checked";
-                                    int point = ksc.Point;
+                                    string point = ksc.Point.ToString("N2");
+                                    if (point=="0")
+                                    {
+                                        point = "";
+                                    }
                                     <div class="card col-sm-12 mb-1">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between">
@@ -54,7 +57,10 @@
                                                 <span class="badge rounded-pill badge-soft-primary pt-2 pointer" data-bs-toggle="modal" data-bs-target="#ratioModal" onclick="setIdRatio(@ksc.Id)">%@(ksc.Ratio)</span>
                                             </div>
                                             <label class="form-label form-label-sm fs--2 text-400">@Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()</label>
-                                            <div class="col-sm-12 d-flex justify-content-between">
+                                            <div class="col-sm-12 text-center">
+                                                <input class="form-control pointClass" type="text" placeholder="Puan yazınız.. Ör; 3,85" id="pointInput1@(ksc.TargetPeriodId)@(ksc.TargetId)" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" value="@point">
+                                            </div>
+                                           @*  <div class="col-sm-12 d-flex justify-content-between">
                                                 <div class="form-check">
                                                     <input class="form-check-input" id="radioBtn1@(ksc.TargetPeriodId)@(ksc.TargetId)" type="radio" name="@(ksc.TargetPeriodId+"-"+ksc.TargetId)" @if (point == 1)
                                                     {
@@ -84,7 +90,7 @@
                                                     />
                                                     <label class="form-check-label fs-1" for="radioBtn4@(ksc.TargetPeriodId)@(ksc.TargetId)"><span class="badge bg-success">4</span></label>
                                                 </div>
-                                            </div>
+                                            </div> *@
                                         </div>
                                     </div>
                                 }
@@ -120,11 +126,9 @@
     };
     function getPointData(kpiId) {
         var jsonData = "";
-        var rb = document.getElementsByClassName('form-check-input');
-        for (i = 0; i < rb.length; i++) {
-            if (rb[i].checked) {
-                jsonData = jsonData + rb[i].name + '-' + rb[i].parentNode.children[1].children[0].innerHTML + ',';
-            }
+        var pointInput = document.getElementsByClassName('pointClass');
+        for (i = 0; i < pointInput.length; i++) {
+                jsonData = jsonData + pointInput[i].name + '-' + pointInput[i].value + '|';
         }
         document.getElementById('pointData' + kpiId).value = jsonData.substring(0, jsonData.length - 1);
     };

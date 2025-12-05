@@ -41,7 +41,7 @@ namespace PerformansYonetimSistemi.Helper.Database
             modelBuilder.Entity<Position>().ToTable("Position");
             modelBuilder.Entity<KPI>().ToTable("KPI");
             modelBuilder.Entity<Target>().ToTable("Target");
-            modelBuilder.Entity<PerformanceCard>().ToTable("PerformanceCard");
+            modelBuilder.Entity<PerformanceCard>().ToTable("PerformanceCard").Property(e => e.Point).HasColumnType("Decimal").HasPrecision(18, 2);
             modelBuilder.Entity<EmployeeKpi>().ToTable("EmployeeKpi");
             modelBuilder.Entity<Evaluation>().ToTable("Evaluation");
             modelBuilder.Entity<EvaluationForm>().ToTable("EvaluationForm");

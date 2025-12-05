@@ -102,7 +102,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             try
             {
                 List<Tuple<string, string>> givenPoints = new List<Tuple<string, string>>();
-                string[] pointData = stringData.Split(',');
+                string[] pointData = stringData.Split('|');
                 foreach (string data in pointData)
                 {
                     string[] parts = data.Split('-');
@@ -120,7 +120,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
                     {
                         Competency competency = new Competency();
                         competency = _context.Competencys.Where(w => w.TargetPeriodId == targetPeriodId && w.DetailId == Convert.ToInt32(item.Item1)).FirstOrDefault();
-                        competency.GivenPoint = item.Item2;
+                        competency.GivenPoint = item.Item2.Replace(",",".");
                         competency.ModifiedAt = DateTime.Now;
                         _context.Update(competency);
                         _context.SaveChanges();

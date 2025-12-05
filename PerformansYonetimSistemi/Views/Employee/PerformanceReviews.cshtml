@@ -21,16 +21,16 @@
                             <table class="table table-sm fs--2 table-bordered">
                                 <thead>
                                     <tr>
-                                        <th class="text-center fw-bold bg-soft-success">Hedefler (%70)</th>
-                                        <th class="text-center fw-bold bg-soft-warning">Yetkinlikler (%30)</th>
+                                        <th class="text-center fw-bold bg-soft-success">Hedefler (%65)</th>
+                                        <th class="text-center fw-bold bg-soft-warning">Yetkinlikler (%35)</th>
                                         <th class="text-center fw-bold bg-soft-info">Toplam</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-center fw-bold fs--2">@Model.PerformanceCards.Where(w=>w.TargetPeriodId==ek.Id).Sum(s=>s.Point*s.Ratio).ToString("N0")</td>
+                                        <td class="text-center fw-bold fs--2">@Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).Sum(s => s.Point * s.Ratio).ToString("N0")</td>
                                         <td class="text-center fw-bold fs--2">@(functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys).ToString("N0"))</td>
-                                        <td class="text-center fw-bold fs--1">@((functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys) * 30 / 100 + Model.PerformanceCards.Sum(s => s.Point * s.Ratio) * 70 / 100).ToString("N0"))</td>
+                                        <td class="text-center fw-bold fs--1">@((Convert.ToDecimal(functions.CalculateTotalPoint(Model.FormDetails, Model.Competencys) * 35 / 100) + Model.PerformanceCards.Sum(s => s.Point * s.Ratio) * 65 / 100).ToString("N0"))</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -42,15 +42,31 @@
                                 <tr>
                                     <th colspan="2">Hedefler</th>
                                     <th class="text-center"><span class="badge badge-soft-success">Hedeflerin Toplam Oranı</span></th>
-                                    <th class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w=>w.TargetPeriodId==ek.Id).Sum(s=>s.Ratio)</span></th>
+                                    <th class="text-center"><span class="badge badge-soft-success">% @Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).Sum(s => s.Ratio)</span></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @{
+                                    decimal avgPoint = 0;                                    
+                                    foreach (var ksc in Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).OrderBy(o => o.Id))
+                                    {
+                                        avgPoint += Convert.ToDecimal(ksc.Ratio) / Convert.ToDecimal(100) * ksc.Point;
+                                    }
+                                    <tr>
+                                        <td class="fw-bold" colspan="2">Ortalama Puan</td>
+                                        <td class="text-center"><span class="badge rounded-pill badge-soft-success pt-2 pointer">% @Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).Sum(s => s.Ratio)</span></td>
+                                        <td class="text-center">
+                                            <span class="badge rounded-pill badge-soft-danger pt-2 pointer">@avgPoint.ToString("N2")</span>
+                                        </td>
+                                    </tr>
+
+                                }
                                 @foreach (var ksc in Model.PerformanceCards.Where(w => w.TargetPeriodId == ek.Id).OrderBy(o => o.Id))
                                 {
+                                    
                                     <tr>
                                         <td class="text-900">
-                                            @Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id ==ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s=>s.Name).FirstOrDefault()
+                                            @Model.KPIs.Where(w => w.Code == Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.KpiCode).FirstOrDefault()).Select(s => s.Name).FirstOrDefault()
                                         </td>
                                         <td class="text-700">
                                             @Model.Targets.Where(w => w.Id == ksc.TargetId).Select(s => s.Explanation).FirstOrDefault()
@@ -70,20 +86,18 @@
                                 <tr>
                                     <th colspan="2">Yetkinlikler</th>
                                     <th class="text-center"><span class="badge badge-soft-warning">Yetkinliklerin Toplam Oranı</span></th>
-                                    <th class="text-center"><span class="badge badge-soft-warning">%@Model.FormDetails.Where(w=>w.TextLevel==0).Sum(s=>s.Weight)</span></th>
+                                    <th class="text-center"><span class="badge badge-soft-warning">%@Model.FormDetails.Where(w => w.TextLevel == 0).Sum(s => s.Weight)</span></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var ntff in Model.Competencys.Where(w => w.TextLevel == 0))
                                 {
                                     <tr>
-                                        <td class="text-900">
+                                        <td class="text-900" colspan="2">
                                             @ntff.Explanation
                                         </td>
-                                        <td class="text-700">                                            
-                                        </td>
                                         <td class="text-center">
-                                            <span class="badge rounded-pill badge-soft-warning pt-2 pointer">%@Model.FormDetails.Where(w=>w.Id==ntff.DetailId).Select(s=>s.Weight).FirstOrDefault()</span>
+                                            <span class="badge rounded-pill badge-soft-warning pt-2 pointer">%@Model.FormDetails.Where(w => w.Id == ntff.DetailId).Select(s => s.Weight).FirstOrDefault()</span>
                                         </td>
                                         <td class="text-center">
                                             <span class="badge rounded-pill badge-soft-danger pt-2 pointer">@(functions.CalculatePoint(ntff.DetailId, Model.FormDetails, Model.Competencys))</span>
@@ -93,21 +107,20 @@
                                     {
                                         <tr>
                                             <td class="text-900">
-                                                
                                             </td>
                                             <td class="text-700">
                                                 @tlvl1.Explanation
                                             </td>
                                             <td class="text-center">
-                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%@Model.FormDetails.Where(w=>w.Id==tlvl1.DetailId).Select(s=>s.Weight).FirstOrDefault()</span>
+                                                <span class="badge rounded-pill badge-soft-primary pt-2 pointer">%@Model.FormDetails.Where(w => w.Id == tlvl1.DetailId).Select(s => s.Weight).FirstOrDefault()</span>
                                             </td>
                                             <td class="text-center">
                                                 <span class="badge rounded-pill badge-soft-success pt-2 pointer">@(functions.CalculatePoint(tlvl1.DetailId, Model.FormDetails, Model.Competencys))</span>
                                             </td>
                                         </tr>
                                     }
-                                    
-                                }                               
+
+                                }
                             </tbody>
                         </table>
                     </div>

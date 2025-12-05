@@ -105,9 +105,10 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         public async Task<IActionResult> PerformanceReviewsFilter()
         {
             ViewBag.CurrentPage = "/Employee/PerformanceReviews";
+            var competency = await _context.Competencys.ToListAsync();
             mvm = new MainViewModel
             {
-                Employees = await _context.Employees.Where(w => w.IsActive).ToListAsync()
+                Employees = await _context.Employees.Where(w => w.IsActive && competency.Select(s=>s.Employee).Contains(w.TC)).ToListAsync()
             };
             return View(mvm);
         }

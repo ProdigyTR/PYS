@@ -97,24 +97,9 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="d-flex justify-content-between">
-                                    <div class="text-center">
-                                        <span>[1]</span><br />
-                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="1" required />
-                                    </div>
-                                    <div class="text-center">
-                                        <span>[2]</span><br />
-                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="2" required />
-                                    </div>
-                                    <div class="text-center">
-                                        <span>[3]</span><br />
-                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="3" required />
-                                    </div>
-                                    <div class="text-center">
-                                        <span>[4]</span><br />
-                                        <input class="form-check-input" type="radio" name="@itemDt.Id" id="btnRadio" value="4" required />
-                                    </div>                                   
-                                </td>
+                                <td class="text-center">
+                                    <input class="form-control" type="text" placeholder="Puan giriniz... Ör; 3,75" name="@itemDt.Id" required>
+                                </td>                                
                             </tr>
                         }
                     }
@@ -126,11 +111,9 @@
 <script>
     function getDate() {
         var jsonData = "";
-        var rb = document.getElementsByClassName('form-check-input');
-        for (i = 0; i < rb.length; i++) {
-            if (rb[i].checked) {
-                jsonData = jsonData + rb[i].name + '-' + rb[i].value + ',';
-            }
+        var pointInput = document.getElementsByClassName('form-control');
+        for (i = 0; i < pointInput.length; i++) {           
+                jsonData = jsonData + pointInput[i].name + '-' + pointInput[i].value + '|';
         }
         document.getElementById('stringData').value = jsonData.substring(0, jsonData.length - 1);
     };

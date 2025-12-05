@@ -224,7 +224,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
         [HttpPost]
         public IActionResult UpdatePoint(string pointData, int Id)
         {
-            string[] pointList = pointData.Split(",");
+            string[] pointList = pointData.Split("|");
             List<Dictionary<string, string>> resultList = new List<Dictionary<string, string>>();
 
             foreach (string data in pointList)
@@ -247,7 +247,7 @@ namespace PerformansYonetimSistemi.Controllers.Defination
             foreach (Dictionary<string, string> value in resultList)
             {
                 performanceCard = _context.PerformanceCards.Where(w =>w.TargetPeriodId== Convert.ToInt32(value["TargetPeriodId"]) && w.TargetId == Convert.ToInt32(value["TargetId"])).FirstOrDefault();
-                performanceCard.Point = Convert.ToInt32(value["Point"]);
+                performanceCard.Point = Convert.ToDecimal(value["Point"].Replace(".",","));
                 performanceCard.ModifiedAt = DateTime.Now;
                 performanceCard.ModifiedBy = "mert.bagbasi";
                 _context.Update(performanceCard);

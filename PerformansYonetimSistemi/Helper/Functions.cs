@@ -1,7 +1,6 @@
 ﻿using PerformansYonetimSistemi.Models.Defination;
 using PerformansYonetimSistemi.Models.HR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace PerformansYonetimSistemi.Helper
 {
@@ -35,44 +34,44 @@ namespace PerformansYonetimSistemi.Helper
 
             return string.Join(",", result);
         }
-        public double CalculateTotalPoint(List<FormDetail> formDetail, List<Competency> competencys)
+        public decimal CalculateTotalPoint(List<FormDetail> formDetail, List<Competency> competencys)
         {
-            double result = 0;
-            double dblTxtLvl0 = 0;
+            decimal result = 0;
+            decimal dblTxtLvl0 = 0;
             foreach (var txtLvl0 in competencys.Where(w => w.TextLevel == 0).OrderBy(o => o.DetailId))
             {
-                double dblTxtLvl1 = 0;
+                decimal dblTxtLvl1 = 0;
                 foreach (var txtLvl1 in competencys.Where(w => w.TextLevel == 1 && w.Title == txtLvl0.DetailId.ToString()).OrderBy(o => o.DetailId))
                 {
-                    double dblTxtLvl2 = 0;
+                    decimal dblTxtLvl2 = 0;
                     foreach (var txtLvl2 in competencys.Where(w => w.TextLevel == 2 && w.LowerTitle == txtLvl1.DetailId.ToString()).OrderBy(o => o.DetailId))
                     {
-                        dblTxtLvl2 = dblTxtLvl2 + Convert.ToInt32(txtLvl2.GivenPoint) * formDetail.Where(w => w.Id == txtLvl2.DetailId).Select(s => s.Weight).FirstOrDefault() / 100.00;
+                        dblTxtLvl2 = dblTxtLvl2 + Convert.ToDecimal(txtLvl2.GivenPoint.Replace(".",",")) * formDetail.Where(w => w.Id == txtLvl2.DetailId).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault() / Convert.ToDecimal(100);
                     }
-                    dblTxtLvl1 = dblTxtLvl1 + dblTxtLvl2 * formDetail.Where(w => w.Id == txtLvl1.DetailId).Select(s => s.Weight).FirstOrDefault() / 100.00;
+                    dblTxtLvl1 = dblTxtLvl1 + dblTxtLvl2 * formDetail.Where(w => w.Id == txtLvl1.DetailId).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault() / Convert.ToDecimal(100);
                 }
                 dblTxtLvl0 = dblTxtLvl0 + dblTxtLvl1 * formDetail.Where(w => w.Id == txtLvl0.DetailId).Select(s => s.Weight).FirstOrDefault();
             }
             result = dblTxtLvl0;
             return result;
         }
-        public double CalculatePoint(int Id, List<FormDetail> formDetail, List<Competency> competencys)
+        public decimal CalculatePoint(int Id, List<FormDetail> formDetail, List<Competency> competencys)
         {
-            double result = 0;
+            decimal result = 0;
 
             int textLvl = formDetail.Where(w => w.Id == Id).Select(s => s.TextLevel).FirstOrDefault();
 
-            double decTextLvl0 = 0;
-            double decTextLvl1 = 0;
+            decimal decTextLvl0 = 0;
+            decimal decTextLvl1 = 0;
 
             if (textLvl == 1)
             {
                 foreach (var item in competencys.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == Id).Select(s => s.Id).Contains(w.DetailId)))
                 {
-                    decTextLvl1 += Convert.ToDouble(item.GivenPoint) * formDetail.Where(w => w.Id == item.DetailId).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0;
+                    decTextLvl1 += Convert.ToDecimal(item.GivenPoint.Replace(".",",")) * formDetail.Where(w => w.Id == item.DetailId).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault()/ Convert.ToDecimal(100.0);
                 }
-                result = Math.Round(decTextLvl1 * formDetail.Where(w => w.Id == Id).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0, 2);
-                result = Math.Round(result / 5 * 100.0, 2);
+                result = Math.Round(decTextLvl1, 2);
+                
             }
             else if (textLvl == 0)
             {
@@ -80,15 +79,14 @@ namespace PerformansYonetimSistemi.Helper
                 {
                     foreach (var item2 in competencys.Where(w => formDetail.Where(w => Convert.ToInt32(w.LowerTitle) == item.DetailId).Select(s => s.Id).Contains(w.DetailId)))
                     {
-                        decTextLvl0 += Convert.ToDouble(item2.GivenPoint) * formDetail.Where(w => w.Id == item2.DetailId).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0;
+                        decTextLvl0 += Convert.ToDecimal(item2.GivenPoint.Replace(".",",")) * formDetail.Where(w => w.Id == item2.DetailId).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault() / Convert.ToDecimal(100.0);
                     }
-                    result += Math.Round(decTextLvl0 * formDetail.Where(w => w.Id == item.DetailId).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0, 2);
+                    result += Math.Round(decTextLvl0 * formDetail.Where(w => w.Id == item.DetailId).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault() / Convert.ToDecimal(100.0), 4);
                     decTextLvl0 = 0;
                 }
-                result = Math.Round(result * formDetail.Where(w => w.Id == Id).Select(s => Convert.ToDouble(s.Weight)).FirstOrDefault() / 100.0, 2);
-                result = Math.Round(result / 5 * 100.0, 2);
+                //result = Math.Round(result * formDetail.Where(w => w.Id == Id).Select(s => Convert.ToDecimal(s.Weight)).FirstOrDefault(), 2);
             }
-            return result;
+            return Math.Round(result,2);
         }
     }
 }

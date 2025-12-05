@@ -8,7 +8,7 @@ namespace PerformansYonetimSistemi.Models.Defination
         public int Id { get; set; }
         public int TargetPeriodId { get; set; }
         public int TargetId { get; set; }
-        public int Point { get; set; } = 0;
+        public decimal Point { get; set; } = 0;
         public int Status { get; set; } = 0;
         public int Ratio { get; set; } = 0;
     }
