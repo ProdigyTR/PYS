@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PerformansYonetimSistemi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c5d16c6e7a163dd09e82e0cca2996fbf65b379bb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21eb9264fc144e764a15cc05572aff0dddce165f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PerformansYonetimSistemi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PerformansYonetimSistemi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

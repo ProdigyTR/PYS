@@ -20,8 +20,6 @@
     <link href="~/public/assets/css/fonts.googleapis.css" rel="stylesheet">    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css" rel="stylesheet" />
     <link href="~/public/vendors/leaflet.markercluster/MarkerCluster.Default.css" rel="stylesheet">
-    <link href="~/public/vendors/overlayscrollbars/OverlayScrollbars.min.css" rel="stylesheet">
-    <link href="~/public/vendors/leaflet.markercluster/MarkerCluster.css" rel="stylesheet">
     <link href="~/public/assets/css/user-rtl.min.css" rel="stylesheet" id="user-style-rtl">
     <link href="~/public/assets/css/user.min.css" rel="stylesheet" id="user-style-default">
     <link href="~/public/assets/css/theme-rtl.min.css" rel="stylesheet" id="style-rtl">
@@ -88,6 +86,12 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
+        .nav-link-icon .fas {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -127,7 +131,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Home/Index" ? "active" : "")" href="/Home/Index">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fas fa-home"></span>
+                                        <span class="fas fa-tachometer-alt"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Anasayfa</span>
                                 </div>
@@ -149,7 +153,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Department/List" ? "active" : "")" href="/Department/List">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fab fa-buromobelexperte"></span>
+                                        <span class="fas fa-building"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Departman</span>
                                 </div>
@@ -157,7 +161,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Position/List" ? "active" : "")" href="/Position/List">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="far fa-user-circle"></span>
+                                        <span class="fas fa-briefcase"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Pozisyon</span>
                                 </div>
@@ -173,7 +177,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/KPI/DepartmanFilter" ? "active" : "")" href="/KPI/DepartmanFilter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="far fa-star"></span>
+                                        <span class="fas fa-chart-line"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">KPI</span>
                                 </div>
@@ -181,7 +185,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Target/Filter" ? "active" : "")" href="/Target/Filter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fas fa-balance-scale-right"></span>
+                                        <span class="fas fa-bullseye"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Hedef</span>
                                 </div>
@@ -189,7 +193,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Competency/Filter" ? "active" : "")" href="/Competency/Filter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fas fa-balance-scale-right"></span>
+                                        <span class="fas fa-brain"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Yetkinlik</span>
                                 </div>
@@ -205,7 +209,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Hr/Form" ? "active" : "")" href="/Hr/Form">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fas fa-file-alt"></span>
+                                        <span class="fas fa-file-signature"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Formlar</span>
                                 </div>
@@ -213,7 +217,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Evaluation/Create" ? "active" : "")" href="/Evaluation/Create">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="fas fa-file-alt"></span>
+                                        <span class="fas fa-clipboard-check"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Değerlendirme</span>
                                 </div>
@@ -227,7 +231,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/KPI/PerformanceCardFilter" ? "active" : "")" href="/KPI/PerformanceCardFilter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="far fa-id-card"></span>
+                                        <span class="fas fa-id-badge"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">KPI Skor Kartları</span>
                                 </div>
@@ -241,7 +245,7 @@
                             <a class="nav-link @(ViewBag.CurrentPage == "/Employee/PerformanceReviews" ? "active" : "")" href="/Employee/PerformanceReviewsFilter">
                                 <div class="d-flex align-items-center">
                                     <span class="nav-link-icon">
-                                        <span class="far fa-id-card"></span>
+                                        <span class="fas fa-chart-bar"></span>
                                     </span>
                                     <span class="nav-link-text ps-1">Çalışan Karnesi</span>
                                 </div>
@@ -316,7 +320,7 @@
             <footer class="footer tox-dialog__footer-end">
                 <div class="row g-0 justify-content-between fs--1 mb-3">
                     <div class="col-12 col-sm-auto text-center">
-                        <p class="mb-0 text-600">PYS<span class="d-none d-sm-inline-block">|</span> <span class="fs--2" text-300>Developed By <a class="fw-bold" href="http://mertbagbasi.com.tr">Mert BAĞBAŞI</a> </span><br class="d-sm-none" /> @DateTime.Now.Year &copy; </p>
+                        <p class="mb-0 text-600">PYS <span class="d-none d-sm-inline-block">|</span> <span class="fs--2" text-300>Developed By <a class="fw-bold" href="http://mertbagbasi.com.tr">Mert BAĞBAŞI</a> </span><br class="d-sm-none" /> @DateTime.Now.Year &copy; </p>
                     </div>
                     <div class="col-12 col-sm-auto text-center">
                         <p class="mb-0 text-600">v1.0.0</p>
